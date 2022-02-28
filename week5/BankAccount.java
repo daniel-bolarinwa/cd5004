@@ -1,6 +1,6 @@
 
 
-public class BankAccount
+public class BankAccount implements Comparable <BankAccount> 
 {
 	// the attributes
 	private String accountNumber;
@@ -50,6 +50,17 @@ public class BankAccount
 				return true;
 			}
   	}
+
+	@Override
+	public String toString() {
+		return "BankAccount{" + "accName='" + accountName + '\'' + ", accNo=" + accountNumber + ", balance=£" + balance + "}";
+	}
+
+	@Override
+    public int compareTo(BankAccount accIn)
+    {
+      return accountNumber.compareTo(accIn.accountNumber);
+    }  
 }
 
 

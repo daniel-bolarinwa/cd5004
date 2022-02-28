@@ -1,6 +1,6 @@
 public class TestResetable {
     public static void main (String[] args) {
-        BankAccount testAccount = new BankAccount("122222122", "Daniel");
+        BankAccount1 testAccount = new BankAccount1("122222122", "Daniel");
         testAccount.deposit(550);
         System.out.println("current bank account balance for " + testAccount.getAccountName() + " is " + testAccount.getBalance());
         Oblong testOblong = new Oblong (8,8); 

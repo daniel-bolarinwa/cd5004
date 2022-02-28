@@ -1,4 +1,4 @@
-public class CheckableBankAccount extends BankAccount implements Checkable
+public class CheckableBankAccount extends BankAccount1 implements Checkable
 {
     // override the constructor
     public CheckableBankAccount(String numberIn, String nameIn)

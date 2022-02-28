@@ -21,7 +21,7 @@ public class ExceptionsQ {
 
     static int getPosition() {
         System.out.println("Enter array position to display");
-        String positionEntered = EasyScanner.nextString(); // requires EasyScanner class
+        String positionEntered = EasyScanner1.nextString(); // requires EasyScanner class
         return Integer.parseInt(positionEntered);
     }
 

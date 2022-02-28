@@ -1,4 +1,4 @@
-public class TestScanner extends EasyScanner {
+public class TestScanner extends EasyScanner1 {
     public static void main(String[] args) {
         try {
             System.out.println("Please enter an integer");

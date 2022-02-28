@@ -6,7 +6,6 @@ public class EasyScanner
 	{
 		Scanner sc = new Scanner(System.in);
 		int i = sc.nextInt();
-		sc.close();
 		return i;
 	}
 	
@@ -14,7 +13,6 @@ public class EasyScanner
 	{
 		Scanner sc = new Scanner(System.in);
 		double d = sc.nextDouble();
-		sc.close();
 		return d;
 	}
 	
@@ -22,7 +20,6 @@ public class EasyScanner
 	{
 		Scanner sc = new Scanner(System.in);
 		String s = sc.nextLine();
-		sc.close();
 		return s;
 	}
 	
@@ -30,7 +27,6 @@ public class EasyScanner
 	{
 		Scanner sc = new Scanner(System.in);
 		char c = sc.next().charAt(0);
-		sc.close();
 		return c;
 	}
 }
