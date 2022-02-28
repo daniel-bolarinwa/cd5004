@@ -1,6 +1,4 @@
 
-import java.util.Comparator;
-import java.lang.*;
 
 public class Book implements Comparable <Book> 
 { 
