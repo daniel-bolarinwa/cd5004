@@ -1,0 +1,72 @@
+Task
+---
+Implement a system that records calls for the three emergency services (fire, police, 
+ambulance). The system should be able to record the details of the caller and a brief 
+description of the emergency, and which of the services is required (it could be more than 
+one). The system must be able to provide a series of reports, for example producing an 
+ordered list for each service. Emergencies should be able to be removed from the list 
+when dealt with.
+
+Task Breakdown
+---
+Functionality
+- record calls for fire police and ambulance emergency services
+- record description of the emergency plus the service(s) which needs to tend to the emergency plus details of caller(individual who initiates call)
+- provide/generate reports -> for example, produce ordered lists of events of each service type -> e.g., order all police related calls by date
+- emergencies should be removed from existing record bank once dealt with  -> user updates status which in turn removes record
+
+UML
+---
+Caller
+<--->
+-name: String
+-age: int
+-address: String
+
++Caller()
++getName(): String
++getAge(): int
++getAddress(): String
++reportEmergency(Emergency)
++toString(): String
+
+Emergency
+<--->
+-requiredService: String
+-description: String
+-location: String
+
++ Emergency()
++getRequiredService(): String
++getDescription(): String
++getLocation(): String
++toString(): String
+
+EmergencyList
+<--->
+-emergencyMap: HashMap<String, Emergency>()
+
++EmergencyList()
++addEmergency(String, Emergency)
++getEmergency(String): Emergency
++toString(): String
+
+CallerList
+<--->
+-callerList: ArrayList<Caller>
+
++CallerList()
++addCaller(Caller)
++removeCaller(String)
++search(String): Caller
++getCaller(int): Caller
++isEmpty(): boolean
++getCallerCount(): int
++toString(): String
+
+Menu
+<--->
+answerCall -> service menu fire/police/ambulance -> recordCallInformation -> collect caller details and emergency description(service set dynamically by user)
+updateEmergency - ask which emergency to update -> if dealt with implicitly remove emergency
+getEmergencyDetails - 
+generateReport - with menu for what filters

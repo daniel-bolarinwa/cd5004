@@ -3,13 +3,27 @@
  */
 
 public class Emergency {
+    private int id;
     private String requiredService;
     private String description;
     private String location;
+    public Caller callerDetails;
 
-    public Emergency(String serviceIn, String descriptionIn, String locationIn) {
-        requiredService = serviceIn;
+    public Emergency(int idIn, String descriptionIn, String locationIn) {
+        id = idIn;
         description = descriptionIn;
+        location = locationIn;
+    }
+
+    public void setService(String serviceIn) {
+        requiredService = serviceIn;
+    }
+
+    public void setDescription(String descriptionIn) {
+        description = descriptionIn;
+    }
+
+    public void setLocation(String locationIn) {
         location = locationIn;
     }
 
@@ -23,6 +37,18 @@ public class Emergency {
 
     public String getLocation() {
         return location;
+    }
+
+    public void setCallerDetails(Caller callerIn) {
+        callerDetails = callerIn;
+    }
+
+    public Caller getCallerDetails() {
+        return callerDetails;
+    }
+
+    public int getId() {
+        return id;
     }
 
     @Override

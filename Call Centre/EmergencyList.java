@@ -2,26 +2,30 @@
  *  @author Daniel Bolarinwa
  */
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class EmergencyList {
-    private static HashMap<String, Emergency> emergencyMap;
+    private ArrayList<Emergency> emergencyList;
 
     public EmergencyList() {
-        emergencyMap = new HashMap<String, Emergency>();
+       emergencyList = new ArrayList<>();
     }
 
-    public static void addEmergency(String CallerId, Emergency emergencyIn) {
-        emergencyMap.put(CallerId, emergencyIn);
+    public void addEmergency(Emergency emergencyIn) {
+        emergencyList.add(emergencyIn);
     }
 
-    public Emergency getEmergency(String keyIn) {   
-        // take one off logical position to get ArrayList position
-        return emergencyMap.get(keyIn);
-	}
+    public void removeEmergency(Emergency emergencyIn) {
+        emergencyList.remove(emergencyIn);
+    }
+
+    // public Emergency getEmergency(int keyIn) {   
+    //     // take one off logical position to get ArrayList position
+    //     return emergencyMap.get(keyIn);
+	// }
 
     @Override
 	public String toString() {
-        return emergencyMap.toString();
+        return emergencyList.toString();
     }
 }
