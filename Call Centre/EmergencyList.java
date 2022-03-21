@@ -5,7 +5,7 @@
 import java.util.ArrayList;
 
 public class EmergencyList {
-    private ArrayList<Emergency> emergencyList;
+    public ArrayList<Emergency> emergencyList;
 
     public EmergencyList() {
        emergencyList = new ArrayList<>();
@@ -23,6 +23,15 @@ public class EmergencyList {
     //     // take one off logical position to get ArrayList position
     //     return emergencyMap.get(keyIn);
 	// }
+
+    public Emergency getEmergencyByPosition(int positionIn) {   
+        // take one off logical position to get ArrayList position
+        return emergencyList.get(positionIn);
+	}
+
+    public int getSize() {
+        return emergencyList.size();
+    }
 
     @Override
 	public String toString() {
