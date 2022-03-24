@@ -67,6 +67,6 @@ CallerList
 Menu
 <--->
 answerCall -> service menu fire/police/ambulance -> recordCallInformation -> collect caller details and emergency description(service set dynamically by user)
-updateEmergency - ask which emergency to update -> if dealt with implicitly remove emergency
-getEmergencyDetails - 
-generateReport - with menu for what filters
+updateEmergency -> ask which emergency to update
+archiveResolvedEmergencies -> remove any solved emergencies
+generateReport -> with menu for what filters

@@ -1,4 +1,4 @@
-/** Class used to record the details of a tenant
+/** Class used to record the details of a Caller
  *  @author Daniel Bolarinwa
  */
 
@@ -24,10 +24,6 @@ public class Caller {
     public String getAddress() {
         return address;
     }
-
-    // public void reportEmergency(Emergency emergencyIn) {
-    //     addEmergency(emergencyIn); // reports a given emergency
-    // }
 
     @Override
 	public String toString()

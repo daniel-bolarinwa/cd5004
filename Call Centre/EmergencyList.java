@@ -1,4 +1,4 @@
-/** Class used to record the details of a tenant
+/** Class used to record a list of emergencies
  *  @author Daniel Bolarinwa
  */
 
@@ -11,27 +11,10 @@ public class EmergencyList {
        emergencyList = new ArrayList<>();
     }
 
-    public void addEmergency(Emergency emergencyIn) {
-        emergencyList.add(emergencyIn);
-    }
-
-    public void removeEmergency(Emergency emergencyIn) {
-        emergencyList.remove(emergencyIn);
-    }
-
-    // public Emergency getEmergency(int keyIn) {   
-    //     // take one off logical position to get ArrayList position
-    //     return emergencyMap.get(keyIn);
-	// }
-
     public Emergency getEmergencyByPosition(int positionIn) {   
         // take one off logical position to get ArrayList position
         return emergencyList.get(positionIn);
 	}
-
-    public int getSize() {
-        return emergencyList.size();
-    }
 
     @Override
 	public String toString() {

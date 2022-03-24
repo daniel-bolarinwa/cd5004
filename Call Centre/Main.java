@@ -1,4 +1,4 @@
-/** Class used to record the details of a tenant
+/** Class used to execute Call Centre logic
  *  @author Daniel Bolarinwa
  */
 
@@ -7,8 +7,7 @@ import java.io.PrintWriter;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 public class Main {
-
-    static EmergencyList emergencyList = new EmergencyList(); // these will eventually be read from file to keep state records from past 
+    static EmergencyList emergencies = new EmergencyList(); // these will eventually be read from file to keep state records from past 
     public static void main(String[] args) {          
         int option;
         do {
@@ -16,8 +15,8 @@ public class Main {
             System.out.println("<-*-*-*-*-MENU-*-*-*-*->");
             System.out.println();
             System.out.println("1. Answer Call");
-            System.out.println("2. Update Emergency");
-            System.out.println("3. Get Emergency Details");
+            System.out.println("2. Update Emergency details");
+            System.out.println("3. Archive Resolved Emergencies");
             System.out.println("4. Generate Reports");
             System.out.println("5. Save and Quit");
             System.out.println();
@@ -33,7 +32,7 @@ public class Main {
                     updateEmergency();
                     break;
                 case 3:
-                    getEmergencyDetails();
+                    archiveResolvedEmergencies();
                     break;
                 case 4:
                     generateReport();
@@ -43,16 +42,15 @@ public class Main {
                     break;
                 default:
                     System.out.println("Enter 1-5 only");
-
             }
-        } while (option != '7');
+        } while (option != 5);
     }
 
     static void answerCall() {
         // TODO: retrive existing data to keep up to date the total emergencies rasied so far -> will help with autogenrating id for emergencies
         // once done send the total + 1 as id for new emergency
         retrieveExistingEmergencyData();
-        int emergencyId = emergencyList.getSize();
+        int emergencyId = emergencies.emergencyList.size();
         System.out.println("Hi, emergency services! What emergency service do you need?");
         System.out.println("<---Please choose enter (1-3) for one the following: \n1. Fire Brigade \n2. Police \n3. Ambulance--->"); // TODO: remember to implement implicit logic to add other services they might need
         int serviceOption = EasyScanner.nextInt();
@@ -98,23 +96,77 @@ public class Main {
     }
 
     static void updateEmergency() {
-        System.out.println("<---Please choose the caller you would like to update an emergency for--->");
-        // Display all callers and their associated emergencies
-        System.out.println("<---Please choose the emergency you want to update for the caller--->");
-        // Display list of emergencies currently associated to the chosen caller
+        System.out.println("<---Please choose the emergency you would like to update--->");
+        // Display all emergencies
+        System.out.println(emergencies.toString());
+        int option = EasyScanner.nextInt();
 
+        Emergency emergencyToUpdate = emergencies.getEmergencyByPosition(option);
+        System.out.println("<---Please choose what you would like to update about the emergency--->");
+        System.out.println("<---Please choose enter (1-5) for one the following: \n1. Required Service \n2. Description \n3. Location \n4. Caller Details \n5. Status--->");
+        int secondOption = EasyScanner.nextInt();
+        do {
+            switch (secondOption) {
+            case 1:
+                System.out.println("<---Enter new service/services: you can add one or more of the specified services below---> \nFire Brigade \nPolice \nAmbulance");
+                String serviceToAdd = EasyScanner.nextString();
+                emergencyToUpdate.setService(serviceToAdd);
+                break;
+            case 2:
+                System.out.println("<---Enter new description--->");
+                String descriptionToUpdate = EasyScanner.nextString();
+                emergencyToUpdate.setDescription(descriptionToUpdate);
+                break;
+            case 3:
+                System.out.println("<---Enter new location--->");
+                String locationToUpdate = EasyScanner.nextString();
+                emergencyToUpdate.setLocation(locationToUpdate);
+                break;
+            case 4:
+                System.out.println("<---Enter new Caller details--->");
+
+                System.out.println("<---Enter Caller full name: --->");
+                String callerFullNameToUpdate = EasyScanner.nextString();
+
+                System.out.println("<---Enter Caller age: --->");
+                int callerAgeToUpdate = EasyScanner.nextInt();
+
+                System.out.println("<---Enter Caller address: --->");
+                String callerAddressToUpdate = EasyScanner.nextString();
+
+                Caller caller = new Caller(callerFullNameToUpdate, callerAgeToUpdate, callerAddressToUpdate);
+                emergencyToUpdate.setCallerDetails(caller);
+                break;
+            case 5:
+                System.out.println("<---Please choose the status to set---> \n1. PENDING \n2. RESOLVED");
+                int statusOption = EasyScanner.nextInt();
+                if (statusOption == 1) {
+                    emergencyToUpdate.status = Emergency.Status.PENDING;
+                } else if (statusOption == 2) {
+                    emergencyToUpdate.status = Emergency.Status.RESOLVED;
+                }
+            case 6:
+                System.out.println("returning to main menu...");
+            default:
+                System.out.println("Please try again: the choice which was specified is invalid! Enter 1-6 only");
+            } 
+        } while (secondOption != 6);
+    }
+
+    static void archiveResolvedEmergencies() {
+        for(int i = 0; i <= emergencies.emergencyList.size(); i++) {
+            if (emergencies.getEmergencyByPosition(i).status == Emergency.Status.RESOLVED) {
+                emergencies.emergencyList.remove(i);
+            }
+        }
     }
 
     static void generateReport() {
 
     }
 
-    static void getEmergencyDetails() {
-        
-    }
-
     static void addEmergencyToList(Emergency emergencyIn) {
-        emergencyList.addEmergency(emergencyIn);
+        emergencies.emergencyList.add(emergencyIn);
     }
 
     static void retrieveExistingEmergencyData() {
@@ -129,7 +181,7 @@ public class Main {
         while(endOfFile != true)
         {
             try {
-                emergencyList.addEmergency(emergency);
+                emergencies.emergencyList.add(emergency);
                 emergency =  (Emergency) emergencyStream.readObject();
             } catch(Exception  e)
             {
@@ -155,8 +207,8 @@ public class Main {
             PrintWriter writer = new PrintWriter(file);
         ) {
             while (fail = false) {
-                for(int i = 0; i <= emergencyList.getSize(); i++) {
-                    writer.println(emergencyList.getEmergencyByPosition(i));
+                for(int i = 0; i <= emergencies.emergencyList.size(); i++) {
+                    writer.println(emergencies.getEmergencyByPosition(i));
                 }
             }
         } catch (Exception e) {

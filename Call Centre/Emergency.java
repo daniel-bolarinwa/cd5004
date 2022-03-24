@@ -1,4 +1,4 @@
-/** Class used to record the details of a tenant
+/** Class used to record the details of an Emergency
  *  @author Daniel Bolarinwa
  */
 
@@ -8,11 +8,17 @@ public class Emergency {
     private String description;
     private String location;
     public Caller callerDetails;
+    public Status status;
+    public enum Status {
+        PENDING,
+        RESOLVED;
+    }
 
     public Emergency(int idIn, String descriptionIn, String locationIn) {
         id = idIn;
         description = descriptionIn;
         location = locationIn;
+        status = Status.PENDING;
     }
 
     public void setService(String serviceIn) {
@@ -45,10 +51,6 @@ public class Emergency {
 
     public Caller getCallerDetails() {
         return callerDetails;
-    }
-
-    public int getId() {
-        return id;
     }
 
     @Override
