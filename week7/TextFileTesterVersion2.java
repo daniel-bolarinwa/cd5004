@@ -12,7 +12,7 @@ public class TextFileTesterVersion2
 		List<Car> carList = new ArrayList<>();
 
 		System.out.print("How many cars? ");             
-		int numberOfCars = EasyScanner.nextInt();
+		int numberOfCars = EasyScanner4.nextInt();
 
 		int counter = 1;
 
@@ -23,7 +23,7 @@ public class TextFileTesterVersion2
 				counter++;
 				System.out.println("1. Add a car");
 				System.out.println("4. Quit\n");
-				choice = EasyScanner.nextChar();
+				choice = EasyScanner4.nextChar();
 				System.out.println(); switch(choice)
 				{
 					case '1' :	addCar(carList);
@@ -83,11 +83,11 @@ public class TextFileTesterVersion2
 		double tempPrice;
 		
 		System.out.print("Please enter the registration number: ");
-		tempReg = EasyScanner.nextString();
+		tempReg = EasyScanner4.nextString();
 		System.out.print("Please enter the make: ");
-		tempMake = EasyScanner.nextString();
+		tempMake = EasyScanner4.nextString();
 		System.out.print("Please enter the price: ");
-		tempPrice = EasyScanner.nextDouble();
+		tempPrice = EasyScanner4.nextDouble();
 		carListIn.add(new Car(tempReg, tempMake, tempPrice));
 	}
 }

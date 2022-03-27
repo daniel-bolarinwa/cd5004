@@ -28,6 +28,6 @@ public class Caller {
     @Override
 	public String toString()
    {
-            return fullName+", "+age +", "+address;
+            return fullName + ";" + age + ";" + address;
    }
 }

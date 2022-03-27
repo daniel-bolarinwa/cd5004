@@ -21,7 +21,7 @@ public class HostelWithMenu
 
      
      System.out.print("Enter number of rooms: ");
-     rooms = EasyScanner.nextInt(); // call private method 
+     rooms = EasyScanner3.nextInt(); // call private method 
 	 	// initialise tenant list
      list  = new TenantList(rooms);   
      TenantFileHandler.readRecords(list);
@@ -38,7 +38,7 @@ public class HostelWithMenu
         System.out.println("6. Save and Quit");
         System.out.println();
         System.out.print("Enter choice (1-6): ");
-        choice = EasyScanner.nextChar();
+        choice = EasyScanner3.nextChar();
         System.out.println();
         
         switch(choice)
@@ -76,9 +76,9 @@ public class HostelWithMenu
     {
         
         System.out.println("Enter room number: ");
-        int roomEntered = EasyScanner.nextInt();
+        int roomEntered = EasyScanner3.nextInt();
         System.out.println("Enter name: ");
-        String nameEntered = EasyScanner.nextString();
+        String nameEntered = EasyScanner3.nextString();
      
         if(roomEntered < 1 || roomEntered > noOfRoomsIn)
         {
@@ -118,7 +118,7 @@ public class HostelWithMenu
   static void removeHandler(int noOfRoomsIn, TenantList listIn)
     {
         System.out.println("Enter room number: ");
-        int roomEntered = EasyScanner.nextInt();
+        int roomEntered = EasyScanner3.nextInt();
         // check for errors
         if(roomEntered < 1 || roomEntered>noOfRoomsIn)
         {
@@ -138,11 +138,11 @@ public class HostelWithMenu
     static void paymentHandler(int noOfRoomsIn, TenantList listIn)
     {
         System.out.println("Enter room number: ");
-        int roomEntered = EasyScanner.nextInt();
+        int roomEntered = EasyScanner3.nextInt();
         System.out.println("Enter month: ");
-        String monthEntered = EasyScanner.nextString();
+        String monthEntered = EasyScanner3.nextString();
         System.out.println("Enter amount: ");
-        double amountEntered = EasyScanner.nextDouble();
+        double amountEntered = EasyScanner3.nextDouble();
       
         // check for errors
       
@@ -166,7 +166,7 @@ public class HostelWithMenu
     {
         int i;
         System.out.println("Enter room number: ");
-        int roomEntered = EasyScanner.nextInt();
+        int roomEntered = EasyScanner3.nextInt();
         // check for errors
         if(roomEntered < 1 || roomEntered > noOfRoomsIn)
         {

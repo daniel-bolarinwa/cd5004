@@ -5,7 +5,7 @@ public class BankProgram
 		char choice;
 		int size;
 		System.out.print("Maximum number of accounts? ");
-		size = EasyScanner.nextInt();
+		size = EasyScanner2.nextInt();
 		// create Bank object
 		Bank myBank = new Bank(size);
 		
@@ -23,7 +23,7 @@ public class BankProgram
 			System.out.print("Enter choice [1-6]: ");
 			
 			// get choice
-			choice = EasyScanner.nextChar();
+			choice = EasyScanner2.nextChar();
 			System.out.println();
 			
 			// process menu options
@@ -51,9 +51,9 @@ public class BankProgram
 	{
 		// get details from user
 		System.out.print("Enter account number: ");
-		String number = EasyScanner.nextString();
+		String number = EasyScanner2.nextString();
 		System.out.print("Enter account name: ");
-		String name = EasyScanner.nextString();
+		String name = EasyScanner2.nextString();
 		// create new account
 		BankAccount1 account = new BankAccount1(number, name);
 		// add account to list
@@ -72,7 +72,7 @@ public class BankProgram
 	{
 		// get account number of account to remove
 		System.out.print("Enter account number: ");
-		String number = EasyScanner.nextString();
+		String number = EasyScanner2.nextString();
 		// delete item if it exists
 		boolean ok = bankIn.remove(number); if (!ok)
 		{
@@ -89,9 +89,9 @@ public class BankProgram
 	{
 	// get details from user
 		System.out.print("Enter account number: ");
-		String number = EasyScanner.nextString();
+		String number = EasyScanner2.nextString();
 		System.out.print("Enter amount to deposit: ");
-		double amount = EasyScanner.nextDouble();
+		double amount = EasyScanner2.nextDouble();
 		boolean ok = bankIn.depositMoney(number, amount); // attempt to deposit 
 		if (!ok)
 		{
@@ -108,9 +108,9 @@ public class BankProgram
 	{
 		// get details from user
 		System.out.print("Enter account number: ");
-		String number = EasyScanner.nextString();
+		String number = EasyScanner2.nextString();
 		System.out.print("Enter amount to withdraw: ");
-		double amount = EasyScanner.nextDouble();
+		double amount = EasyScanner2.nextDouble();
 		boolean ok = bankIn.withdrawMoney(number, amount); // attempt to withdraw 
 		if (!ok)
 		{
@@ -127,7 +127,7 @@ public class BankProgram
 	{
 		// get details from user
 		System.out.print("Enter account number ");
-		String number = EasyScanner.nextString();
+		String number = EasyScanner2.nextString();
 		BankAccount1 account = bankIn.getItem(number);
 		if (account == null)
 		{

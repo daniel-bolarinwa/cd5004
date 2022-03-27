@@ -1,6 +1,6 @@
 import  java.util.Scanner;
 
-public class EasyScanner
+public class EasyScanner4
 {
     public static int nextInt()
     {

@@ -16,7 +16,7 @@ public class RandomFileTester
 			System.out.println("1. Add a car");
 			System.out.println("2. Display a car");
 			System.out.println("3. Quit\n");
-			choice = EasyScanner.nextChar();
+			choice = EasyScanner4.nextChar();
 			System.out.println();
 			switch(choice)
 			{
@@ -36,12 +36,12 @@ public class RandomFileTester
 		String tempMake;
 		double tempPrice;
 		System.out.print("Please enter the registration number: ");
-		tempReg = EasyScanner.nextString();
+		tempReg = EasyScanner4.nextString();
 		
 		if(tempReg.length() > 10) //limit the registration number to 10 characters
 		{
 			System.out.print("Ten characters only - please re-enter: ");
-			tempReg = EasyScanner.nextString();
+			tempReg = EasyScanner4.nextString();
 		}
 		// pad the string with spaces to make it exactly 10 characters long 
 		for(int i = tempReg.length() + 1 ; i <= 10 ; i++)
@@ -51,13 +51,13 @@ public class RandomFileTester
 	
 		// get the make of the car from the user
 		System.out.print("Please enter the make: ");
-		tempMake = EasyScanner.nextString();
+		tempMake = EasyScanner4.nextString();
 		
 		// limit the make number to 10 characters
 		if(tempMake.length() > 10)
 		{
 			System.out.print("Ten characters only - please re-enter: ");
-			tempMake = EasyScanner.nextString();
+			tempMake = EasyScanner4.nextString();
 		}
 		// pad the string with spaces to make it exactly 10 characters long
 		for(int i = tempMake.length() + 1; i <= 10; i++)
@@ -67,7 +67,7 @@ public class RandomFileTester
 		
 		// get the price of the car from the user 
 		System.out.print("Please enter the price: ");
-		tempPrice = EasyScanner.nextDouble();
+		tempPrice = EasyScanner4.nextDouble();
 		
 		// write the record to the file
 		writeRecord(new Car(tempReg, tempMake, tempPrice));
@@ -78,7 +78,7 @@ public class RandomFileTester
 		int pos;
 		// get the position of the item to be read from the user
 		System.out.print("Enter the car's position in the list: ");
-		pos = EasyScanner.nextInt(); // read the record requested from file
+		pos = EasyScanner4.nextInt(); // read the record requested from file
 		Car tempCar = readRecord(pos);
 		if(tempCar != null)
 		{

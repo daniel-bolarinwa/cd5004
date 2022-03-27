@@ -2,23 +2,27 @@
  *  @author Daniel Bolarinwa
  */
 
+import java.time.*;
+
 public class Emergency {
-    private int id;
-    private String requiredService;
+    public int id;
+    private String requiredService; // TODO: change to enum as we only have 3 possible values
     private String description;
     private String location;
     public Caller callerDetails;
+    public LocalDateTime dateRaised; 
     public Status status;
     public enum Status {
         PENDING,
         RESOLVED;
     }
 
-    public Emergency(int idIn, String descriptionIn, String locationIn) {
+    public Emergency(int idIn, String descriptionIn, String locationIn) { //TODO: service should be in constructor!!!
         id = idIn;
         description = descriptionIn;
         location = locationIn;
         status = Status.PENDING;
+        dateRaised = LocalDateTime.now();
     }
 
     public void setService(String serviceIn) {
@@ -56,6 +60,6 @@ public class Emergency {
     @Override
 	public String toString()
    {
-        return "("  + requiredService + ", " + description  + ", " + location  + ")";
+        return id + "," + requiredService + "," + description  + "," + location  + "," + dateRaised.toString() + "," + status.toString() + "," + callerDetails.toString();
    }
 }

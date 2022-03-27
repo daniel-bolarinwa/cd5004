@@ -29,7 +29,7 @@ public class TextFileTester
 			System.out.println("2. Remove a car");
 			System.out.println("3. List all cars");
 			System.out.println("4. Quit\n");
-			choice = EasyScanner.nextChar();
+			choice = EasyScanner4.nextChar();
 			System.out.println(); switch(choice)
 			{
 				case '1' :	addCar(carList);
@@ -53,11 +53,11 @@ public class TextFileTester
 		double tempPrice;
 		
 		System.out.print("Please enter the registration number: ");
-		tempReg = EasyScanner.nextString();
+		tempReg = EasyScanner4.nextString();
 		System.out.print("Please enter the make: ");
-		tempMake = EasyScanner.nextString();
+		tempMake = EasyScanner4.nextString();
 		System.out.print("Please enter the price: ");
-		tempPrice = EasyScanner.nextDouble();
+		tempPrice = EasyScanner4.nextDouble();
 		carListIn.add(new Car(tempReg, tempMake, tempPrice));
 	}
 	
@@ -67,7 +67,7 @@ public class TextFileTester
 	{
 		int pos;
 		System.out.print("Enter the position of the car to be removed: ");
-		pos = EasyScanner.nextInt();
+		pos = EasyScanner4.nextInt();
 		carListIn.remove(pos - 1);
 	}
 	

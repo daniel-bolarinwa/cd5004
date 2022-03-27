@@ -11,7 +11,7 @@ public class PaymentListTester
 	
 		// get size of list
 		System.out.print("Size of list? ");
-		size = EasyScanner.nextInt();
+		size = EasyScanner3.nextInt();
 		list = new PaymentList(size); // create object to test
 		// menu
 		do
@@ -28,7 +28,7 @@ public class PaymentListTester
             System.out.println();
             System.out.print("Enter a choice [1-7]: ");
             // get choice
-            choice = EasyScanner.nextChar();
+            choice = EasyScanner3.nextChar();
             System.out.println();
             // process choice
             switch(choice)
@@ -50,9 +50,9 @@ public class PaymentListTester
     {  
         // prompt for payment details
         System.out.print("Enter Month: ");
-        String month = EasyScanner.nextString();
+        String month = EasyScanner3.nextString();
         System.out.print("Enter Amount: ");
-        double amount = EasyScanner.nextDouble();
+        double amount = EasyScanner3.nextDouble();
         // create new Payment object from input
         Payment p = new Payment(month, amount);
         // attempt to add payment to list
@@ -88,7 +88,7 @@ public class PaymentListTester
     {  
         // prompt for and receive payment number
         System.out.print("Enter payment number to retrieve: ");
-        int num = EasyScanner.nextInt();
+        int num = EasyScanner3.nextInt();
         // retrieve Payment object form list
         Payment p = listIn.getPayment(num); // returns null if invalid position
         if (p != null)// check if Payment retrieved

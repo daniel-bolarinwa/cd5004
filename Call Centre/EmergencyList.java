@@ -2,19 +2,25 @@
  *  @author Daniel Bolarinwa
  */
 
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class EmergencyList {
-    public ArrayList<Emergency> emergencyList;
+    public CopyOnWriteArrayList<Emergency> emergencyList;
 
     public EmergencyList() {
-       emergencyList = new ArrayList<>();
+       emergencyList = new CopyOnWriteArrayList<Emergency>();
     }
 
     public Emergency getEmergencyByPosition(int positionIn) {   
         // take one off logical position to get ArrayList position
-        return emergencyList.get(positionIn);
+        return emergencyList.get(positionIn-1);
 	}
+
+    public void displayAllEmergencies() {
+        for (Emergency emergency: emergencyList) {
+            System.out.println(emergency.toString());
+        }
+    }
 
     @Override
 	public String toString() {
