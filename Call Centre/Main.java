@@ -46,11 +46,9 @@ public class Main extends FileManager {
     }
 
     static void answerCall() {
-        // TODO: retrive existing data to keep up to date the total emergencies rasied so far -> will help with autogenrating id for emergencies
-        // once done send the total + 1 as id for new emergency
         int emergencyId = emergencies.emergencyList.size();
         System.out.println("Hi, emergency services! What emergency service do you need?");
-        System.out.println("<---Please choose enter (1-3) for one the following: ---> \n1. Fire Brigade \n2. Police \n3. Ambulance"); // TODO: remember to implement implicit logic to add other services they might need
+        System.out.println("<---Please choose enter (1-3) for one the following: ---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
         int serviceOption = EasyScanner.nextInt();
 
         System.out.println("<---Please provide your personal details below--->");
@@ -168,11 +166,6 @@ public class Main extends FileManager {
         int reportOption = EasyScanner.nextInt();
         CopyOnWriteArrayList<Emergency> tempEmergencyList = new CopyOnWriteArrayList<Emergency>();
 
-        // TODO: if I have time implement a sorting method by date and time the emergency was raised
-        // System.out.println("<---Please choose how you would like to order your report--->");
-        // System.out.println("<---a. Ascending date--->");
-        // System.out.println("<---b. Descending date--->");
-        // System.out.println("<---c. None--->");
         switch (reportOption) {
         case 1:
             System.out.println("Loading all emergencies...");
@@ -187,7 +180,6 @@ public class Main extends FileManager {
             for (Emergency emergency: emergencies.emergencyList) {
                 if (emergency.getRequiredService().equals(serviceOption)) {
                     tempEmergencyList.add(emergency);
-                    // System.out.println(emergency.toString());
                 }
             }
 
@@ -206,7 +198,6 @@ public class Main extends FileManager {
             for (Emergency emergency: emergencies.emergencyList) {
                 if (emergency.status.toString().equals(statusOption)) {
                     tempEmergencyList.add(emergency);
-                    // System.out.println(emergency.toString());
                 }
             }
 

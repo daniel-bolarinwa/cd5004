@@ -6,7 +6,7 @@ import java.time.*;
 
 public class Emergency {
     public int id;
-    private String requiredService; // TODO: change to enum as we only have 3 possible values
+    private String requiredService;
     private String description;
     private String location;
     public Caller callerDetails;
@@ -17,7 +17,7 @@ public class Emergency {
         RESOLVED;
     }
 
-    public Emergency(int idIn, String descriptionIn, String locationIn) { //TODO: service should be in constructor!!!
+    public Emergency(int idIn, String descriptionIn, String locationIn) {
         id = idIn;
         description = descriptionIn;
         location = locationIn;
