@@ -40,7 +40,7 @@ public class Main extends FileManager {
                     saveAndQuit();
                     break;
                 default:
-                    System.out.println("Enter 1-5 only");
+                    System.out.println("Enter 1-5 only!");
             }
         } while (option != 5);
     }
@@ -48,27 +48,28 @@ public class Main extends FileManager {
     static void answerCall() {
         int emergencyId = emergencies.emergencyList.size();
         System.out.println("Hi, emergency services! What emergency service do you need?");
-        System.out.println("<---Please choose enter (1-3) for one the following: ---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
+        System.out.println("<---Please choose enter (1-3) for one the following---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
         int serviceOption = EasyScanner.nextInt();
 
         System.out.println("<---Please provide your personal details below--->");
-        System.out.println("FULL NAME: ");
+        System.out.println("Enter full name: ");
         String nameIn = EasyScanner.nextString();
         
-        System.out.println("AGE: ");
+        System.out.println("Enter age: ");
         int ageIn = EasyScanner.nextInt();
 
-        System.out.println("HOME ADDRESS: ");
+        System.out.println("Enter home address: ");
         String addressIn = EasyScanner.nextString();
 
         System.out.println("<---Please provide details of the emergency below--->");
-        System.out.println("BRIEF DESCRIPTION: ");
+        System.out.println("Enter brief description: ");
         String descIn = EasyScanner.nextString();
 
-        System.out.println("LOCATION OF INCIDENT: ");
+        System.out.println("Enter location of incident: ");
         String locationIn = EasyScanner.nextString();
 
         recordCallInformation(serviceOption, nameIn, ageIn, addressIn, descIn, locationIn, emergencyId+1);
+        writeToFile("Emergencies.csv", emergencies);
     }
 
     static void recordCallInformation(int serviceIn, String nameIn, int ageIn, String addressIn, String descIn, String locationIn, int emergencyIdIn) {
@@ -77,13 +78,13 @@ public class Main extends FileManager {
         emergency.setCallerDetails(caller);
         switch (serviceIn) {
             case 1:
-                emergency.setService("Fire Brigade");
+                emergency.fireBrigade = true;
                 break;
             case 2:
-                emergency.setService("Police");
+                emergency.police = true;
                 break;
             case 3:
-                emergency.setService("Ambulance");
+                emergency.ambulance = true;
                 break;
             default:
                 System.out.println("Please try again: the service which was specified is invalid!");
@@ -98,27 +99,27 @@ public class Main extends FileManager {
         int option = EasyScanner.nextInt();
 
         Emergency emergencyToUpdate = emergencies.getEmergencyByPosition(option);
-        System.out.println("<---Please choose what you would like to update about the emergency by entering (1-6) for one the following: --->\n1. Required Service \n2. Description \n3. Location \n4. Caller Details \n5. Status \n6. Return to main menu--->");
+        System.out.println("<---Please choose what you would like to update about the emergency by entering (1-6) for one the following--->\n1. Required Services \n2. Description \n3. Location \n4. Caller Details \n5. Status \n6. Return to main menu");
 
         int secondOption = EasyScanner.nextInt();
         switch (secondOption) {
         case 1:
-            System.out.println("<---Enter new service/services: you can add one or more of the specified services below seperated by a space---> \nFire Brigade \nPolice \nAmbulance");
-            String serviceToAdd = EasyScanner.nextString();
-            emergencyToUpdate.setService(serviceToAdd);
+            System.out.println("<---Please enter (1-3) for the service you would like to add to the emergency---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
+            int serviceToAdd = EasyScanner.nextInt();
+            addExtraServices(serviceToAdd, emergencyToUpdate);
             break;
         case 2:
-            System.out.println("<---Enter new description--->");
+            System.out.println("<---Enter new description: --->");
             String descriptionToUpdate = EasyScanner.nextString();
             emergencyToUpdate.setDescription(descriptionToUpdate);
             break;
         case 3:
-            System.out.println("<---Enter new location--->");
+            System.out.println("<---Enter new location: --->");
             String locationToUpdate = EasyScanner.nextString();
             emergencyToUpdate.setLocation(locationToUpdate);
             break;
         case 4:
-            System.out.println("<---Enter new Caller details--->");
+            System.out.println("<---Please provide updated Caller details--->");
 
             System.out.println("<---Enter Caller full name: --->");
             String callerFullNameToUpdate = EasyScanner.nextString();
@@ -147,6 +148,7 @@ public class Main extends FileManager {
         default:
             System.out.println("Please try again: the choice which was specified is invalid! Enter 1-6 only");
         }
+        writeToFile("Emergencies.csv", emergencies);
     }
 
     static void archiveResolvedEmergencies() {
@@ -155,6 +157,7 @@ public class Main extends FileManager {
                 emergencies.emergencyList.remove(emergency);
             }
         }
+        writeToFile("Emergencies.csv", emergencies);
     }
 
     static void generateReport() {
@@ -175,13 +178,9 @@ public class Main extends FileManager {
             break;
         case 2:
             System.out.println("Loading emergencies by service...");
-            System.out.println("<---Please choose one the following: ---> \nFire Brigade \nPolice \nAmbulance");
-            String serviceOption = EasyScanner.nextString();
-            for (Emergency emergency: emergencies.emergencyList) {
-                if (emergency.getRequiredService().equals(serviceOption)) {
-                    tempEmergencyList.add(emergency);
-                }
-            }
+            System.out.println("<---Please choose the service you would like to filter with by entering (1-3)---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
+            int serviceOption = EasyScanner.nextInt();
+            tempEmergencyList = filterByService(serviceOption);
 
             if (tempEmergencyList.size() == 0) {
                 System.out.println("the service you chose has no associated emergencies to view...");
@@ -193,7 +192,7 @@ public class Main extends FileManager {
             break;
         case 3:
             System.out.println("Loading emergencies by status...");
-            System.out.println("<---Please choose one of the following: ---> \nPENDING \nRESOLVED");
+            System.out.println("<---Please choose one of the following---> \nPENDING \nRESOLVED");
             String statusOption = EasyScanner.nextString();
             for (Emergency emergency: emergencies.emergencyList) {
                 if (emergency.status.toString().equals(statusOption)) {
@@ -223,6 +222,48 @@ public class Main extends FileManager {
 
     static void retrieveExistingEmergencyData() {
         readFromFile("Emergencies.csv", emergencies);
+    }
+
+    static void addExtraServices(int serviceOption, Emergency emergencyToUpdate) {
+        switch (serviceOption) {
+            case 1:
+                emergencyToUpdate.fireBrigade = true;
+                break;
+            case 2:
+                emergencyToUpdate.police = true;
+                break;
+            case 3:
+                emergencyToUpdate.ambulance = true;
+                break;
+            default:
+                System.out.println("The service you have chosen isn't not valid. Please try again...");
+        }
+    }
+
+    static CopyOnWriteArrayList<Emergency> filterByService(int serviceOption) {
+        CopyOnWriteArrayList<Emergency> filteredServiceList = new CopyOnWriteArrayList<Emergency>();
+        for (Emergency emergency: emergencies.emergencyList) {
+            switch (serviceOption) {
+                case 1:
+                    if (emergency.fireBrigade == true) {
+                        filteredServiceList.add(emergency);
+                    }
+                    break;
+                case 2:
+                    if (emergency.police == true) {
+                        filteredServiceList.add(emergency);
+                    }
+                    break;
+                case 3:
+                    if (emergency.ambulance == true) {
+                        filteredServiceList.add(emergency);
+                    }
+                    break;  
+                default:
+                    System.out.println("Service option not found. Please try again!");
+            }
+        }
+        return filteredServiceList;
     }
 
     static void saveAndQuit() {

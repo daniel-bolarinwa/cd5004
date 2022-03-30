@@ -11,7 +11,11 @@ public class FileManager {
             FileWriter csvWriter = new FileWriter(fileName);
             csvWriter.append("ID");
             csvWriter.append(",");
-            csvWriter.append("RequiredService");
+            csvWriter.append("FireBrigadeRequired");
+            csvWriter.append(",");
+            csvWriter.append("PoliceRequired");
+            csvWriter.append(",");
+            csvWriter.append("AmbulanceRequired");
             csvWriter.append(",");
             csvWriter.append("Description");
             csvWriter.append(",");
@@ -44,13 +48,15 @@ public class FileManager {
             String line = null;
             while ((line = csvReader.readLine()) != null) {
                 String[] emergencyData = line.split(",");
-                Emergency tempEmergency = new Emergency(Integer.parseInt(emergencyData[0]), emergencyData[2], emergencyData[3]);
-                tempEmergency.setService(emergencyData[1]);
-                tempEmergency.dateRaised = LocalDateTime.parse(emergencyData[4]);
-                tempEmergency.status = Emergency.Status.valueOf(emergencyData[5]);
+                Emergency tempEmergency = new Emergency(Integer.parseInt(emergencyData[0]), emergencyData[4], emergencyData[5]);
+                tempEmergency.fireBrigade = Boolean.parseBoolean(emergencyData[1]);
+                tempEmergency.police = Boolean.parseBoolean(emergencyData[2]);
+                tempEmergency.ambulance = Boolean.parseBoolean(emergencyData[3]);
+                tempEmergency.dateRaised = LocalDateTime.parse(emergencyData[6]);
+                tempEmergency.status = Emergency.Status.valueOf(emergencyData[7]);
                 
                 // data manipulation for caller details
-                String[] callerData = emergencyData[6].split(";");
+                String[] callerData = emergencyData[8].split(";");
                 Caller tempCaller = new Caller(callerData[0], Integer.parseInt(callerData[1]), callerData[2]);
 
                 tempEmergency.setCallerDetails(tempCaller);

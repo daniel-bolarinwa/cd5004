@@ -6,7 +6,9 @@ import java.time.*;
 
 public class Emergency {
     public int id;
-    private String requiredService;
+    public boolean fireBrigade;
+    public boolean police;
+    public boolean ambulance;
     private String description;
     private String location;
     public Caller callerDetails;
@@ -23,10 +25,9 @@ public class Emergency {
         location = locationIn;
         status = Status.PENDING;
         dateRaised = LocalDateTime.now();
-    }
-
-    public void setService(String serviceIn) {
-        requiredService = serviceIn;
+        fireBrigade = false;
+        police = false;
+        ambulance = false;
     }
 
     public void setDescription(String descriptionIn) {
@@ -35,10 +36,6 @@ public class Emergency {
 
     public void setLocation(String locationIn) {
         location = locationIn;
-    }
-
-    public String getRequiredService() {
-        return requiredService;
     }
 
     public String getDescription() {
@@ -60,6 +57,6 @@ public class Emergency {
     @Override
 	public String toString()
    {
-        return id + "," + requiredService + "," + description  + "," + location  + "," + dateRaised.toString() + "," + status.toString() + "," + callerDetails.toString();
+        return id + "," + fireBrigade + "," + police + "," + ambulance + "," + description  + "," + location  + "," + dateRaised.toString() + "," + status.toString() + "," + callerDetails.toString();
    }
 }
