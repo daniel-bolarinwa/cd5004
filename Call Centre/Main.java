@@ -19,7 +19,7 @@ public class Main extends FileManager {
             System.out.println("4. Generate Reports");
             System.out.println("5. Save and Quit");
             System.out.println();
-            System.out.print("Enter choice (1-5): ");
+            System.out.print("Please enter choice (1-5): ");
             option = EasyScanner.nextInt();
             System.out.println();
 
@@ -40,35 +40,49 @@ public class Main extends FileManager {
                     saveAndQuit();
                     break;
                 default:
-                    System.out.println("Enter 1-5 only!");
+                    System.out.println("\nPlease enter 1-5 only!");
             }
         } while (option != 5);
     }
 
     static void answerCall() {
-        int emergencyId = emergencies.emergencyList.size();
+        int emergencyId = emergencies.emergencyList.size() + 1;
         System.out.println("Hi, emergency services! What emergency service do you need?");
         System.out.println("<---Please choose enter (1-3) for one the following---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
         int serviceOption = EasyScanner.nextInt();
 
-        System.out.println("<---Please provide your personal details below--->");
+        System.out.println("\n<---Please provide your personal details below--->");
         System.out.println("Enter full name: ");
-        String nameIn = EasyScanner.nextString();
+        String name = EasyScanner.nextString();
+        while (!name.matches("[a-zA-Z\\s]+")) {
+            System.out.println("Name can only contain alpabetical characters. Please try again.");
+            name = EasyScanner.nextString();
+        };
         
-        System.out.println("Enter age: ");
-        int ageIn = EasyScanner.nextInt();
+        System.out.println("\nEnter age: ");
+        int age = EasyScanner.nextInt();
+        while (age <= 0) {
+            System.out.println("Age must be greater than 0! Please try again.");
+            age = EasyScanner.nextInt();
+        }
 
-        System.out.println("Enter home address: ");
-        String addressIn = EasyScanner.nextString();
+        System.out.println("\nEnter home address: ");
+        String address = EasyScanner.nextString();
 
-        System.out.println("<---Please provide details of the emergency below--->");
+        System.out.println("\n<---Please provide details of the emergency below--->");
         System.out.println("Enter brief description: ");
-        String descIn = EasyScanner.nextString();
+        String desc = EasyScanner.nextString();
 
-        System.out.println("Enter location of incident: ");
-        String locationIn = EasyScanner.nextString();
+        System.out.println("\nEnter location of incident -> (just the postcode): ");
+        String location = EasyScanner.nextString();
+        while (!location.matches("[a-zA-Z0-9\\s]+")) {
+            System.out.println("Location can only contain alphanumeric characters. Please try again.");
+            location = EasyScanner.nextString();
+        }
 
-        recordCallInformation(serviceOption, nameIn, ageIn, addressIn, descIn, locationIn, emergencyId+1);
+        recordCallInformation(serviceOption, name, age, address, desc, location, emergencyId);
+
+        System.out.println("Emergency recorded");
         writeToFile("Emergencies.csv", emergencies);
     }
 
@@ -95,46 +109,59 @@ public class Main extends FileManager {
     static void updateEmergency() {
         System.out.println("<---Please specify the id of the emergency you would like to update--->\n");
         // Display all emergencies
+        System.out.println("ID, FireBrigadeRequired, PoliceRequired, AmbulanceRequired, Description, Location, DateRaised, Status, CallerDetails");
         emergencies.displayAllEmergencies();
         int option = EasyScanner.nextInt();
 
         Emergency emergencyToUpdate = emergencies.getEmergencyByPosition(option);
-        System.out.println("<---Please choose what you would like to update about the emergency by entering (1-6) for one the following--->\n1. Required Services \n2. Description \n3. Location \n4. Caller Details \n5. Status \n6. Return to main menu");
+        System.out.println("\n<---Please choose what you would like to update about the emergency by entering (1-6) for one the following--->\n1. Required Services \n2. Description \n3. Location \n4. Caller Details \n5. Status \n6. Return to main menu");
 
         int secondOption = EasyScanner.nextInt();
         switch (secondOption) {
         case 1:
-            System.out.println("<---Please enter (1-3) for the service you would like to add to the emergency---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
+            System.out.println("\n<---Please enter (1-3) for the service you would like to add to the emergency---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
             int serviceToAdd = EasyScanner.nextInt();
             addExtraServices(serviceToAdd, emergencyToUpdate);
             break;
         case 2:
-            System.out.println("<---Enter new description: --->");
+            System.out.println("\n<---Enter new description: --->");
             String descriptionToUpdate = EasyScanner.nextString();
             emergencyToUpdate.setDescription(descriptionToUpdate);
             break;
         case 3:
-            System.out.println("<---Enter new location: --->");
+            System.out.println("\n<---Enter new location: --->");
             String locationToUpdate = EasyScanner.nextString();
+            while (!locationToUpdate.matches("[a-zA-Z0-9\\s]+")) {
+                System.out.println("Location can only contain alphanumeric characters. Please try again.");
+                locationToUpdate = EasyScanner.nextString();
+            }
             emergencyToUpdate.setLocation(locationToUpdate);
             break;
         case 4:
-            System.out.println("<---Please provide updated Caller details--->");
+            System.out.println("\n<---Please provide updated Caller details--->");
 
-            System.out.println("<---Enter Caller full name: --->");
+            System.out.println("\n<---Enter Caller full name: --->");
             String callerFullNameToUpdate = EasyScanner.nextString();
+            while (!callerFullNameToUpdate.matches("[a-zA-Z\\s]+")) {
+                System.out.println("Name can only contain alpabetical characters. Please try again.");
+                callerFullNameToUpdate = EasyScanner.nextString();
+            };
 
-            System.out.println("<---Enter Caller age: --->");
+            System.out.println("\n<---Enter Caller age: --->");
             int callerAgeToUpdate = EasyScanner.nextInt();
+            while (callerAgeToUpdate <= 0) {
+                System.out.println("Age must be greater than 0! Please try again.");
+                callerAgeToUpdate = EasyScanner.nextInt();
+            }
 
-            System.out.println("<---Enter Caller address: --->");
+            System.out.println("\n<---Enter Caller address: --->");
             String callerAddressToUpdate = EasyScanner.nextString();
 
             Caller caller = new Caller(callerFullNameToUpdate, callerAgeToUpdate, callerAddressToUpdate);
             emergencyToUpdate.setCallerDetails(caller);
             break;
         case 5:
-            System.out.println("<---Please choose the status to set by entering 1 or 2 ---> \n1. PENDING \n2. RESOLVED");
+            System.out.println("\n<---Please choose the status to set by entering 1 or 2 ---> \n1. PENDING \n2. RESOLVED");
             int statusOption = EasyScanner.nextInt();
             if (statusOption == 1) {
                 emergencyToUpdate.status = Emergency.Status.PENDING;
@@ -143,11 +170,13 @@ public class Main extends FileManager {
             }
             break;
         case 6:
-            System.out.println("returning to main menu...");
+            System.out.println("\nreturning to main menu...");
             break;
         default:
             System.out.println("Please try again: the choice which was specified is invalid! Enter 1-6 only");
         }
+
+        System.out.println("Emergency updated");
         writeToFile("Emergencies.csv", emergencies);
     }
 
@@ -157,11 +186,13 @@ public class Main extends FileManager {
                 emergencies.emergencyList.remove(emergency);
             }
         }
+
+        System.out.println("All emergencies which were in 'RESOLVED' status have now been archived");
         writeToFile("Emergencies.csv", emergencies);
     }
 
     static void generateReport() {
-        System.out.println("<---Please choose how you would like to generate your report by entering (1-4) for any of the following--->");
+        System.out.println("\n<---Please choose how you would like to generate your report by entering (1-4) for any of the following--->");
         System.out.println("1. View all emergencies");
         System.out.println("2. View Emergencies by service");
         System.out.println("3. View Emergencies by status");
@@ -171,13 +202,15 @@ public class Main extends FileManager {
 
         switch (reportOption) {
         case 1:
-            System.out.println("Loading all emergencies...");
+            System.out.println("\nLoading all emergencies...");
+            System.out.println("\nID, FireBrigadeRequired, PoliceRequired, AmbulanceRequired, Description, Location, DateRaised, Status, CallerDetails");
+
             for (Emergency emergency: emergencies.emergencyList) {
                 System.out.println(emergency.toString());
             }
             break;
         case 2:
-            System.out.println("Loading emergencies by service...");
+            System.out.println("\nLoading emergencies by service...");
             System.out.println("<---Please choose the service you would like to filter with by entering (1-3)---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
             int serviceOption = EasyScanner.nextInt();
             tempEmergencyList = filterByService(serviceOption);
@@ -185,24 +218,33 @@ public class Main extends FileManager {
             if (tempEmergencyList.size() == 0) {
                 System.out.println("the service you chose has no associated emergencies to view...");
             } else {
+                System.out.println("\nID, FireBrigadeRequired, PoliceRequired, AmbulanceRequired, Description, Location, DateRaised, Status, CallerDetails");
                 for (Emergency tempEmergency: tempEmergencyList) {
                     System.out.println(tempEmergency.toString());
                 }
             }
             break;
         case 3:
-            System.out.println("Loading emergencies by status...");
-            System.out.println("<---Please choose one of the following---> \nPENDING \nRESOLVED");
-            String statusOption = EasyScanner.nextString();
+            System.out.println("\nLoading emergencies by status...");
+            System.out.println("<---Please choose one of the following---> \n1. PENDING \n2. RESOLVED");
+            int statusOption = EasyScanner.nextInt();
             for (Emergency emergency: emergencies.emergencyList) {
-                if (emergency.status.toString().equals(statusOption)) {
-                    tempEmergencyList.add(emergency);
+                if (statusOption == 1) {
+                    if (emergency.status.toString().equals("PENDING")) {
+                        tempEmergencyList.add(emergency);
+                    }
+                } else if (statusOption == 2) {
+                    if (emergency.status.toString().equals("RESOLVED")) {
+                        tempEmergencyList.add(emergency);
+                    }
                 }
+                
             }
 
             if (tempEmergencyList.size() == 0) {
                 System.out.println("the status you chose has no associated emergencies to view...");
             } else {
+                System.out.println("\nID, FireBrigadeRequired, PoliceRequired, AmbulanceRequired, Description, Location, DateRaised, Status, CallerDetails");
                 for (Emergency tempEmergency: tempEmergencyList) {
                     System.out.println(tempEmergency.toString());
                 }
