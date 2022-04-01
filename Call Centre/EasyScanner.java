@@ -2,6 +2,19 @@ import java.util.Scanner;
 
 public class EasyScanner
 {
+	public static long nextLong()
+	{
+		
+		Scanner sc = new Scanner(System.in);
+
+		while (!sc.hasNextLong()) {
+			System.out.println("That is not a number! Please try again entering a valid number");
+			sc.next();
+		}
+		long i = sc.nextLong();
+		return i;
+	}
+
 	public static int nextInt()
 	{
 		

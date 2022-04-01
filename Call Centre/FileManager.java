@@ -57,7 +57,7 @@ public class FileManager {
                 
                 // data manipulation for caller details
                 String[] callerData = emergencyData[8].split(";");
-                Caller tempCaller = new Caller(callerData[0], Integer.parseInt(callerData[1]), callerData[2]);
+                Caller tempCaller = new Caller(callerData[0], Integer.parseInt(callerData[1]), Long.parseLong(callerData[2]));
 
                 tempEmergency.setCallerDetails(tempCaller);
 

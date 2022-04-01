@@ -5,12 +5,12 @@
 public class Caller {
     private String fullName;
     private int age;
-    private String address;
+    private long phoneNumber;
     
-    public Caller(String nameIn, int ageIn, String addressIn) {
+    public Caller(String nameIn, int ageIn, long phoneNumberIn) {
         fullName = nameIn;
         age = ageIn;
-        address = addressIn;
+        phoneNumber = phoneNumberIn;
     }
 
     public String getName() {
@@ -21,13 +21,13 @@ public class Caller {
         return age;
     }
 
-    public String getAddress() {
-        return address;
+    public long getPhoneNumber() {
+        return phoneNumber;
     }
 
     @Override
 	public String toString()
    {
-            return fullName + ";" + age + ";" + address;
+            return fullName + ";" + age + ";" + phoneNumber;
    }
 }

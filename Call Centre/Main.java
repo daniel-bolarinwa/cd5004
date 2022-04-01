@@ -13,7 +13,7 @@ public class Main extends FileManager {
             System.out.println();
             System.out.println("<-*-*-*-*-MENU-*-*-*-*->");
             System.out.println();
-            System.out.println("1. Answer Call");
+            System.out.println("1. Record Emergency");
             System.out.println("2. Update Emergency details");
             System.out.println("3. Archive Resolved Emergencies");
             System.out.println("4. Generate Reports");
@@ -25,7 +25,7 @@ public class Main extends FileManager {
 
             switch (option) {
                 case 1:
-                    answerCall();
+                    recordEmergency();
                     break;
                 case 2:
                     updateEmergency();
@@ -45,7 +45,7 @@ public class Main extends FileManager {
         } while (option != 5);
     }
 
-    static void answerCall() {
+    static void recordEmergency() {
         int emergencyId = emergencies.emergencyList.size() + 1;
         System.out.println("Hi, emergency services! What emergency service do you need?");
         System.out.println("<---Please choose enter (1-3) for one the following---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
@@ -66,8 +66,12 @@ public class Main extends FileManager {
             age = EasyScanner.nextInt();
         }
 
-        System.out.println("\nEnter home address: ");
-        String address = EasyScanner.nextString();
+        System.out.println("\nEnter phone number: ");
+        long phoneNumber = EasyScanner.nextLong();
+        while (String.valueOf(phoneNumber).length() != 11) {
+            System.out.println("Phone number must have a length of 11! Please try again entering 11 digits.");
+            phoneNumber = EasyScanner.nextLong();
+        }
 
         System.out.println("\n<---Please provide details of the emergency below--->");
         System.out.println("Enter brief description: ");
@@ -80,14 +84,14 @@ public class Main extends FileManager {
             location = EasyScanner.nextString();
         }
 
-        recordCallInformation(serviceOption, name, age, address, desc, location, emergencyId);
+        recordEmergencyCallInformation(serviceOption, name, age, phoneNumber, desc, location, emergencyId);
 
         System.out.println("Emergency recorded");
         writeToFile("Emergencies.csv", emergencies);
     }
 
-    static void recordCallInformation(int serviceIn, String nameIn, int ageIn, String addressIn, String descIn, String locationIn, int emergencyIdIn) {
-        Caller caller = new Caller(nameIn, ageIn, addressIn);
+    static void recordEmergencyCallInformation(int serviceIn, String nameIn, int ageIn, long phoneNumberIn, String descIn, String locationIn, int emergencyIdIn) {
+        Caller caller = new Caller(nameIn, ageIn, phoneNumberIn);
         Emergency emergency = new Emergency(emergencyIdIn, descIn, locationIn);
         emergency.setCallerDetails(caller);
         switch (serviceIn) {
@@ -154,10 +158,14 @@ public class Main extends FileManager {
                 callerAgeToUpdate = EasyScanner.nextInt();
             }
 
-            System.out.println("\n<---Enter Caller address: --->");
-            String callerAddressToUpdate = EasyScanner.nextString();
+            System.out.println("\n<---Enter Caller phone number: --->");
+            long callerPhoneNumberToUpdate = EasyScanner.nextLong();
+            while (String.valueOf(callerPhoneNumberToUpdate).length() != 11) {
+                System.out.println("Phone number must have a length of 11! Please try again entering 11 digits.");
+                callerPhoneNumberToUpdate = EasyScanner.nextLong();
+            }
 
-            Caller caller = new Caller(callerFullNameToUpdate, callerAgeToUpdate, callerAddressToUpdate);
+            Caller caller = new Caller(callerFullNameToUpdate, callerAgeToUpdate, callerPhoneNumberToUpdate);
             emergencyToUpdate.setCallerDetails(caller);
             break;
         case 5:
