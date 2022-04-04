@@ -54,6 +54,20 @@ public class Emergency {
         return callerDetails;
     }
 
+    public void displayEmergencyDetails() {
+        System.out.printf("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n", 
+                        id, 
+                        fireBrigade, 
+                        police, 
+                        ambulance, 
+                        description, 
+                        location, 
+                        dateRaised.toString(), 
+                        status.toString(), 
+                        callerDetails.displayCallerDetails()
+        );
+    }
+
     @Override
 	public String toString()
    {

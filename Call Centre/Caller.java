@@ -25,9 +25,13 @@ public class Caller {
         return phoneNumber;
     }
 
+    public String displayCallerDetails() {
+        return "Full Name: " + fullName + " Age: " + age + " Phone number: " + phoneNumber;
+    }
+
     @Override
 	public String toString()
    {
-            return fullName + ";" + age + ";" + phoneNumber;
+        return fullName + ";" + age + ";" + phoneNumber;
    }
 }

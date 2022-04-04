@@ -85,9 +85,6 @@ public class Main extends FileManager {
         }
 
         recordEmergencyCallInformation(serviceOption, name, age, phoneNumber, desc, location, emergencyId);
-
-        System.out.println("Emergency recorded");
-        writeToFile("Emergencies.csv", emergencies);
     }
 
     static void recordEmergencyCallInformation(int serviceIn, String nameIn, int ageIn, long phoneNumberIn, String descIn, String locationIn, int emergencyIdIn) {
@@ -106,8 +103,12 @@ public class Main extends FileManager {
                 break;
             default:
                 System.out.println("Please try again: the service which was specified is invalid!");
+                return;
         }
         addEmergencyToList(emergency);
+
+        System.out.println("Emergency recorded");
+        writeToFile("Emergencies.csv", emergencies);
     }
 
     static void updateEmergency() {
@@ -211,10 +212,9 @@ public class Main extends FileManager {
         switch (reportOption) {
         case 1:
             System.out.println("\nLoading all emergencies...");
-            System.out.println("\nID, FireBrigadeRequired, PoliceRequired, AmbulanceRequired, Description, Location, DateRaised, Status, CallerDetails");
-
+            displayheaders();
             for (Emergency emergency: emergencies.emergencyList) {
-                System.out.println(emergency.toString());
+                emergency.displayEmergencyDetails();
             }
             break;
         case 2:
@@ -226,9 +226,9 @@ public class Main extends FileManager {
             if (tempEmergencyList.size() == 0) {
                 System.out.println("the service you chose has no associated emergencies to view...");
             } else {
-                System.out.println("\nID, FireBrigadeRequired, PoliceRequired, AmbulanceRequired, Description, Location, DateRaised, Status, CallerDetails");
+                displayheaders();
                 for (Emergency tempEmergency: tempEmergencyList) {
-                    System.out.println(tempEmergency.toString());
+                    tempEmergency.displayEmergencyDetails();
                 }
             }
             break;
@@ -252,9 +252,9 @@ public class Main extends FileManager {
             if (tempEmergencyList.size() == 0) {
                 System.out.println("the status you chose has no associated emergencies to view...");
             } else {
-                System.out.println("\nID, FireBrigadeRequired, PoliceRequired, AmbulanceRequired, Description, Location, DateRaised, Status, CallerDetails");
+                displayheaders();
                 for (Emergency tempEmergency: tempEmergencyList) {
-                    System.out.println(tempEmergency.toString());
+                    tempEmergency.displayEmergencyDetails();
                 }
             }
             break;
@@ -322,5 +322,19 @@ public class Main extends FileManager {
         // write current state information to file, whether complete or not write regardless
         
         writeToFile("Emergencies.csv", emergencies);
+    }
+
+    static void displayheaders() {
+        System.out.printf("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
+            "ID,",
+            "FireBrigadeRequired,",
+            "PoliceRequired,",
+            "AmbulanceRequired,",
+            "Description,",
+            "Location,",
+            "DateRaised,",
+            "Status,",
+            "CallerDetails"
+        );
     }
 }
