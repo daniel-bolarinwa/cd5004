@@ -66,7 +66,7 @@ public class Main extends FileManager {
         System.out.println("\nEnter age: ");
         int age = EasyScanner.nextInt();
         while (age <= 0 || age >= 150) {
-            System.out.println("Age must be greater than 0! Please try again.");
+            System.out.println("Age must be greater than 0 and less than 150! Please try again.");
             age = EasyScanner.nextInt();
         }
 
