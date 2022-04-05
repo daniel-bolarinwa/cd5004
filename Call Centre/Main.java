@@ -120,7 +120,7 @@ public class Main extends FileManager {
             emergencies.displayAllEmergencies();
             int option = EasyScanner.nextInt();
 
-            if (option <= emergencies.emergencyList.size()) {
+            if (option <= emergencies.emergencyList.size() && option > 0) {
                 Emergency emergencyToUpdate = emergencies.getEmergencyByPosition(option);
                 System.out.println("\n<---Please choose what you would like to update about the emergency by entering (1-6) for one the following--->\n1. Required Services \n2. Description \n3. Location \n4. Caller Details \n5. Status \n6. Return to main menu");
 
