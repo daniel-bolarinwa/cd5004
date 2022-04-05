@@ -195,6 +195,7 @@ public class Main extends FileManager {
 
                 System.out.println("Emergency updated");
                 writeToFile("Emergencies.csv", emergencies);
+                return;
             }
             System.out.println("The emergency id you specified is invalid! Please try again later with a valid emergency id.");
             return;
