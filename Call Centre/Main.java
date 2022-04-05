@@ -279,6 +279,7 @@ public class Main extends FileManager {
             default:
                 System.out.println("Please try again: the choice which was specified is invalid! Enter 1-4 only");
             }
+            return;
         }
 
         System.out.println("There are currently no emergencies in the system! Please record an emergency first.");
