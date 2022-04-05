@@ -265,7 +265,7 @@ public class Main extends FileManager {
                 }
 
                 if (tempEmergencyList.size() == 0) {
-                    System.out.println("Status option not found. Please try again!");
+                    System.out.println("No emergencies found for the specified status. Please try again!");
                 } else {
                     displayheaders();
                     for (Emergency tempEmergency: tempEmergencyList) {
