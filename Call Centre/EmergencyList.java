@@ -18,7 +18,7 @@ public class EmergencyList {
 
     public void displayAllEmergencies() {
         for (Emergency emergency: emergencyList) {
-            System.out.println(emergency.toString());
+            emergency.displayEmergencyDetails();
         }
     }
 

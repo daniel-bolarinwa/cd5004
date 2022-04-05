@@ -50,7 +50,7 @@ public class Main extends FileManager {
         System.out.println("Hi, emergency services! What emergency service do you need?");
         System.out.println("<---Please choose enter (1-3) for one the following---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
         int serviceOption = EasyScanner.nextInt();
-        if (serviceOption > 3) {
+        if (serviceOption > 3 || serviceOption < 1) {
             System.out.println("Please try again: the value which was specified is invalid!");
             return;
         }
@@ -65,7 +65,7 @@ public class Main extends FileManager {
         
         System.out.println("\nEnter age: ");
         int age = EasyScanner.nextInt();
-        while (age <= 0) {
+        while (age <= 0 || age >= 150) {
             System.out.println("Age must be greater than 0! Please try again.");
             age = EasyScanner.nextInt();
         }
@@ -92,11 +92,6 @@ public class Main extends FileManager {
     }
 
     static void recordEmergencyCallInformation(int serviceIn, String nameIn, int ageIn, String phoneNumberIn, String descIn, String locationIn, int emergencyIdIn) {
-        if (serviceIn > 3) {
-            System.out.println("Service option not found. Please try again later!");
-            return;
-        }
-
         Caller caller = new Caller(nameIn, ageIn, phoneNumberIn);
         Emergency emergency = new Emergency(emergencyIdIn, descIn, locationIn);
         emergency.setCallerDetails(caller);
@@ -121,7 +116,7 @@ public class Main extends FileManager {
         if (emergencies.emergencyList.size() > 0) {
             System.out.println("<---Please specify the id of the emergency you would like to update--->\n");
             // Display all emergencies
-            System.out.println("ID, FireBrigadeRequired, PoliceRequired, AmbulanceRequired, Description, Location, DateRaised, Status, CallerDetails");
+            displayheaders();
             emergencies.displayAllEmergencies();
             int option = EasyScanner.nextInt();
 
@@ -134,7 +129,7 @@ public class Main extends FileManager {
                 case 1:
                     System.out.println("\n<---Please enter (1-3) for the service you would like to add to the emergency---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
                     int serviceToAdd = EasyScanner.nextInt();
-                    if (serviceToAdd > 3) {
+                    if (serviceToAdd > 3 || serviceToAdd < 1) {
                         System.out.println("Please try again: the value which was specified is invalid!");
                         return;
                     }
@@ -307,7 +302,7 @@ public class Main extends FileManager {
                 emergencyToUpdate.ambulance = true;
                 break;
             default:
-                System.out.println("The service you have chosen isn't not valid. Please try again...");
+                System.out.println("The service you have chosen isn't valid. Please try again...");
         }
     }
 
