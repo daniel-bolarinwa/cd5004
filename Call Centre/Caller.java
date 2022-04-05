@@ -5,9 +5,9 @@
 public class Caller {
     private String fullName;
     private int age;
-    private long phoneNumber;
+    private String phoneNumber;
     
-    public Caller(String nameIn, int ageIn, long phoneNumberIn) {
+    public Caller(String nameIn, int ageIn, String phoneNumberIn) {
         fullName = nameIn;
         age = ageIn;
         phoneNumber = phoneNumberIn;
@@ -21,7 +21,7 @@ public class Caller {
         return age;
     }
 
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 

@@ -50,6 +50,10 @@ public class Main extends FileManager {
         System.out.println("Hi, emergency services! What emergency service do you need?");
         System.out.println("<---Please choose enter (1-3) for one the following---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
         int serviceOption = EasyScanner.nextInt();
+        if (serviceOption > 3) {
+            System.out.println("Please try again: the value which was specified is invalid!");
+            return;
+        }
 
         System.out.println("\n<---Please provide your personal details below--->");
         System.out.println("Enter full name: ");
@@ -67,10 +71,10 @@ public class Main extends FileManager {
         }
 
         System.out.println("\nEnter phone number: ");
-        long phoneNumber = EasyScanner.nextLong();
-        while (String.valueOf(phoneNumber).length() != 11) {
+        String phoneNumber = EasyScanner.nextString();
+        while (phoneNumber.length() != 11 && !phoneNumber.matches("[0-9]+")) {
             System.out.println("Phone number must have a length of 11! Please try again entering 11 digits.");
-            phoneNumber = EasyScanner.nextLong();
+            phoneNumber = EasyScanner.nextString();
         }
 
         System.out.println("\n<---Please provide details of the emergency below--->");
@@ -87,7 +91,7 @@ public class Main extends FileManager {
         recordEmergencyCallInformation(serviceOption, name, age, phoneNumber, desc, location, emergencyId);
     }
 
-    static void recordEmergencyCallInformation(int serviceIn, String nameIn, int ageIn, long phoneNumberIn, String descIn, String locationIn, int emergencyIdIn) {
+    static void recordEmergencyCallInformation(int serviceIn, String nameIn, int ageIn, String phoneNumberIn, String descIn, String locationIn, int emergencyIdIn) {
         Caller caller = new Caller(nameIn, ageIn, phoneNumberIn);
         Emergency emergency = new Emergency(emergencyIdIn, descIn, locationIn);
         emergency.setCallerDetails(caller);
@@ -101,9 +105,6 @@ public class Main extends FileManager {
             case 3:
                 emergency.ambulance = true;
                 break;
-            default:
-                System.out.println("Please try again: the service which was specified is invalid!");
-                return;
         }
         addEmergencyToList(emergency);
 
@@ -112,81 +113,89 @@ public class Main extends FileManager {
     }
 
     static void updateEmergency() {
-        System.out.println("<---Please specify the id of the emergency you would like to update--->\n");
-        // Display all emergencies
-        System.out.println("ID, FireBrigadeRequired, PoliceRequired, AmbulanceRequired, Description, Location, DateRaised, Status, CallerDetails");
-        emergencies.displayAllEmergencies();
-        int option = EasyScanner.nextInt();
+        if (emergencies.emergencyList.size() > 0) {
+            System.out.println("<---Please specify the id of the emergency you would like to update--->\n");
+            // Display all emergencies
+            System.out.println("ID, FireBrigadeRequired, PoliceRequired, AmbulanceRequired, Description, Location, DateRaised, Status, CallerDetails");
+            emergencies.displayAllEmergencies();
+            int option = EasyScanner.nextInt();
 
-        Emergency emergencyToUpdate = emergencies.getEmergencyByPosition(option);
-        System.out.println("\n<---Please choose what you would like to update about the emergency by entering (1-6) for one the following--->\n1. Required Services \n2. Description \n3. Location \n4. Caller Details \n5. Status \n6. Return to main menu");
+            if (option <= emergencies.emergencyList.size()) {
+                Emergency emergencyToUpdate = emergencies.getEmergencyByPosition(option);
+                System.out.println("\n<---Please choose what you would like to update about the emergency by entering (1-6) for one the following--->\n1. Required Services \n2. Description \n3. Location \n4. Caller Details \n5. Status \n6. Return to main menu");
 
-        int secondOption = EasyScanner.nextInt();
-        switch (secondOption) {
-        case 1:
-            System.out.println("\n<---Please enter (1-3) for the service you would like to add to the emergency---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
-            int serviceToAdd = EasyScanner.nextInt();
-            addExtraServices(serviceToAdd, emergencyToUpdate);
-            break;
-        case 2:
-            System.out.println("\n<---Enter new description: --->");
-            String descriptionToUpdate = EasyScanner.nextString();
-            emergencyToUpdate.setDescription(descriptionToUpdate);
-            break;
-        case 3:
-            System.out.println("\n<---Enter new location: --->");
-            String locationToUpdate = EasyScanner.nextString();
-            while (!locationToUpdate.matches("[a-zA-Z0-9\\s]+")) {
-                System.out.println("Location can only contain alphanumeric characters. Please try again.");
-                locationToUpdate = EasyScanner.nextString();
+                int secondOption = EasyScanner.nextInt();
+                switch (secondOption) {
+                case 1:
+                    System.out.println("\n<---Please enter (1-3) for the service you would like to add to the emergency---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
+                    int serviceToAdd = EasyScanner.nextInt();
+                    addExtraServices(serviceToAdd, emergencyToUpdate);
+                    break;
+                case 2:
+                    System.out.println("\n<---Enter new description: --->");
+                    String descriptionToUpdate = EasyScanner.nextString();
+                    emergencyToUpdate.setDescription(descriptionToUpdate);
+                    break;
+                case 3:
+                    System.out.println("\n<---Enter new location: --->");
+                    String locationToUpdate = EasyScanner.nextString();
+                    while (!locationToUpdate.matches("[a-zA-Z0-9\\s]+")) {
+                        System.out.println("Location can only contain alphanumeric characters. Please try again.");
+                        locationToUpdate = EasyScanner.nextString();
+                    }
+                    emergencyToUpdate.setLocation(locationToUpdate);
+                    break;
+                case 4:
+                    System.out.println("\n<---Please provide updated Caller details--->");
+
+                    System.out.println("\n<---Enter Caller full name: --->");
+                    String callerFullNameToUpdate = EasyScanner.nextString();
+                    while (!callerFullNameToUpdate.matches("[a-zA-Z\\s]+")) {
+                        System.out.println("Name can only contain alpabetical characters. Please try again.");
+                        callerFullNameToUpdate = EasyScanner.nextString();
+                    };
+
+                    System.out.println("\n<---Enter Caller age: --->");
+                    int callerAgeToUpdate = EasyScanner.nextInt();
+                    while (callerAgeToUpdate <= 0) {
+                        System.out.println("Age must be greater than 0! Please try again.");
+                        callerAgeToUpdate = EasyScanner.nextInt();
+                    }
+
+                    System.out.println("\n<---Enter Caller phone number: --->");
+                    String callerPhoneNumberToUpdate = EasyScanner.nextString();
+                    while (callerPhoneNumberToUpdate.length() != 11 && !callerPhoneNumberToUpdate.matches("[0-9]+")) {
+                        System.out.println("Phone number must have a length of 11! Please try again entering 11 digits.");
+                        callerPhoneNumberToUpdate = EasyScanner.nextString();
+                    }
+
+                    Caller caller = new Caller(callerFullNameToUpdate, callerAgeToUpdate, callerPhoneNumberToUpdate);
+                    emergencyToUpdate.setCallerDetails(caller);
+                    break;
+                case 5:
+                    System.out.println("\n<---Please choose the status to set by entering 1 or 2 ---> \n1. PENDING \n2. RESOLVED");
+                    int statusOption = EasyScanner.nextInt();
+                    if (statusOption == 1) {
+                        emergencyToUpdate.status = Emergency.Status.PENDING;
+                    } else if (statusOption == 2) {
+                        emergencyToUpdate.status = Emergency.Status.RESOLVED;
+                    }
+                    break;
+                case 6:
+                    System.out.println("\nreturning to main menu...");
+                    break;
+                default:
+                    System.out.println("Please try again: the choice which was specified is invalid! Enter 1-6 only");
+                    return;
+                }
+
+                System.out.println("Emergency updated");
+                writeToFile("Emergencies.csv", emergencies);
             }
-            emergencyToUpdate.setLocation(locationToUpdate);
-            break;
-        case 4:
-            System.out.println("\n<---Please provide updated Caller details--->");
-
-            System.out.println("\n<---Enter Caller full name: --->");
-            String callerFullNameToUpdate = EasyScanner.nextString();
-            while (!callerFullNameToUpdate.matches("[a-zA-Z\\s]+")) {
-                System.out.println("Name can only contain alpabetical characters. Please try again.");
-                callerFullNameToUpdate = EasyScanner.nextString();
-            };
-
-            System.out.println("\n<---Enter Caller age: --->");
-            int callerAgeToUpdate = EasyScanner.nextInt();
-            while (callerAgeToUpdate <= 0) {
-                System.out.println("Age must be greater than 0! Please try again.");
-                callerAgeToUpdate = EasyScanner.nextInt();
-            }
-
-            System.out.println("\n<---Enter Caller phone number: --->");
-            long callerPhoneNumberToUpdate = EasyScanner.nextLong();
-            while (String.valueOf(callerPhoneNumberToUpdate).length() != 11) {
-                System.out.println("Phone number must have a length of 11! Please try again entering 11 digits.");
-                callerPhoneNumberToUpdate = EasyScanner.nextLong();
-            }
-
-            Caller caller = new Caller(callerFullNameToUpdate, callerAgeToUpdate, callerPhoneNumberToUpdate);
-            emergencyToUpdate.setCallerDetails(caller);
-            break;
-        case 5:
-            System.out.println("\n<---Please choose the status to set by entering 1 or 2 ---> \n1. PENDING \n2. RESOLVED");
-            int statusOption = EasyScanner.nextInt();
-            if (statusOption == 1) {
-                emergencyToUpdate.status = Emergency.Status.PENDING;
-            } else if (statusOption == 2) {
-                emergencyToUpdate.status = Emergency.Status.RESOLVED;
-            }
-            break;
-        case 6:
-            System.out.println("\nreturning to main menu...");
-            break;
-        default:
-            System.out.println("Please try again: the choice which was specified is invalid! Enter 1-6 only");
+            System.out.println("The emergency id you specified is invalid! Please try again later with a valid emergency id.");
         }
 
-        System.out.println("Emergency updated");
-        writeToFile("Emergencies.csv", emergencies);
+        System.out.println("There are currently no emergencies in the system! Please record an emergency first.");
     }
 
     static void archiveResolvedEmergencies() {
@@ -201,69 +210,72 @@ public class Main extends FileManager {
     }
 
     static void generateReport() {
-        System.out.println("\n<---Please choose how you would like to generate your report by entering (1-4) for any of the following--->");
-        System.out.println("1. View all emergencies");
-        System.out.println("2. View Emergencies by service");
-        System.out.println("3. View Emergencies by status");
-        System.out.println("4. Return to main menu");
-        int reportOption = EasyScanner.nextInt();
-        CopyOnWriteArrayList<Emergency> tempEmergencyList = new CopyOnWriteArrayList<Emergency>();
+        if (emergencies.emergencyList.size() > 0) {
+            System.out.println("\n<---Please choose how you would like to generate your report by entering (1-4) for any of the following--->");
+            System.out.println("1. View all emergencies");
+            System.out.println("2. View Emergencies by service");
+            System.out.println("3. View Emergencies by status");
+            System.out.println("4. Return to main menu");
+            int reportOption = EasyScanner.nextInt();
+            CopyOnWriteArrayList<Emergency> tempEmergencyList = new CopyOnWriteArrayList<Emergency>();
 
-        switch (reportOption) {
-        case 1:
-            System.out.println("\nLoading all emergencies...");
-            displayheaders();
-            for (Emergency emergency: emergencies.emergencyList) {
-                emergency.displayEmergencyDetails();
-            }
-            break;
-        case 2:
-            System.out.println("\nLoading emergencies by service...");
-            System.out.println("<---Please choose the service you would like to filter with by entering (1-3)---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
-            int serviceOption = EasyScanner.nextInt();
-            tempEmergencyList = filterByService(serviceOption);
-
-            if (tempEmergencyList.size() == 0) {
-                System.out.println("the service you chose has no associated emergencies to view...");
-            } else {
+            switch (reportOption) {
+            case 1:
+                System.out.println("\nLoading all emergencies...");
                 displayheaders();
-                for (Emergency tempEmergency: tempEmergencyList) {
-                    tempEmergency.displayEmergencyDetails();
+                for (Emergency emergency: emergencies.emergencyList) {
+                    emergency.displayEmergencyDetails();
                 }
-            }
-            break;
-        case 3:
-            System.out.println("\nLoading emergencies by status...");
-            System.out.println("<---Please choose one of the following---> \n1. PENDING \n2. RESOLVED");
-            int statusOption = EasyScanner.nextInt();
-            for (Emergency emergency: emergencies.emergencyList) {
-                if (statusOption == 1) {
-                    if (emergency.status.toString().equals("PENDING")) {
-                        tempEmergencyList.add(emergency);
-                    }
-                } else if (statusOption == 2) {
-                    if (emergency.status.toString().equals("RESOLVED")) {
-                        tempEmergencyList.add(emergency);
+                break;
+            case 2:
+                System.out.println("\nLoading emergencies by service...");
+                System.out.println("<---Please choose the service you would like to filter with by entering (1-3)---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
+                int serviceOption = EasyScanner.nextInt();
+                tempEmergencyList = filterByService(serviceOption);
+
+                if (tempEmergencyList.size() == 0) {
+                    System.out.println("Service option not found. Please try again later!");
+                } else {
+                    displayheaders();
+                    for (Emergency tempEmergency: tempEmergencyList) {
+                        tempEmergency.displayEmergencyDetails();
                     }
                 }
-                
-            }
-
-            if (tempEmergencyList.size() == 0) {
-                System.out.println("the status you chose has no associated emergencies to view...");
-            } else {
-                displayheaders();
-                for (Emergency tempEmergency: tempEmergencyList) {
-                    tempEmergency.displayEmergencyDetails();
+                break;
+            case 3:
+                System.out.println("\nLoading emergencies by status...");
+                System.out.println("<---Please choose one of the following---> \n1. PENDING \n2. RESOLVED");
+                int statusOption = EasyScanner.nextInt();
+                for (Emergency emergency: emergencies.emergencyList) {
+                    if (statusOption == 1) {
+                        if (emergency.status.toString().equals("PENDING")) {
+                            tempEmergencyList.add(emergency);
+                        }
+                    } else if (statusOption == 2) {
+                        if (emergency.status.toString().equals("RESOLVED")) {
+                            tempEmergencyList.add(emergency);
+                        }
+                    }
                 }
+
+                if (tempEmergencyList.size() == 0) {
+                    System.out.println("Status option not found. Please try again!");
+                } else {
+                    displayheaders();
+                    for (Emergency tempEmergency: tempEmergencyList) {
+                        tempEmergency.displayEmergencyDetails();
+                    }
+                }
+                break;
+            case 4:
+                System.out.println("returning to main menu...");
+                break;
+            default:
+                System.out.println("Please try again: the choice which was specified is invalid! Enter 1-4 only");
             }
-            break;
-        case 4:
-            System.out.println("returning to main menu...");
-            break;
-        default:
-            System.out.println("Please try again: the choice which was specified is invalid! Enter 1-4 only");
         }
+
+        System.out.println("There are currently no emergencies in the system! Please record an emergency first.");
     }
 
     static void addEmergencyToList(Emergency emergencyIn) {
@@ -308,9 +320,7 @@ public class Main extends FileManager {
                     if (emergency.ambulance == true) {
                         filteredServiceList.add(emergency);
                     }
-                    break;  
-                default:
-                    System.out.println("Service option not found. Please try again!");
+                    break;                    
             }
         }
         return filteredServiceList;
