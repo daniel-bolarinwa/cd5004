@@ -72,7 +72,7 @@ public class Main extends FileManager {
 
         System.out.println("\nEnter phone number: ");
         String phoneNumber = EasyScanner.nextString();
-        while (phoneNumber.length() != 11 && !phoneNumber.matches("[0-9]+")) {
+        while (phoneNumber.length() != 11 || !phoneNumber.matches("[0-9]+")) {
             System.out.println("Phone number must have a length of 11! Please try again entering 11 digits.");
             phoneNumber = EasyScanner.nextString();
         }
