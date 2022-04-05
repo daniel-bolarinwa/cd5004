@@ -92,6 +92,11 @@ public class Main extends FileManager {
     }
 
     static void recordEmergencyCallInformation(int serviceIn, String nameIn, int ageIn, String phoneNumberIn, String descIn, String locationIn, int emergencyIdIn) {
+        if (serviceIn > 3) {
+            System.out.println("Service option not found. Please try again later!");
+            return;
+        }
+
         Caller caller = new Caller(nameIn, ageIn, phoneNumberIn);
         Emergency emergency = new Emergency(emergencyIdIn, descIn, locationIn);
         emergency.setCallerDetails(caller);
