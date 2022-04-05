@@ -134,6 +134,10 @@ public class Main extends FileManager {
                 case 1:
                     System.out.println("\n<---Please enter (1-3) for the service you would like to add to the emergency---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
                     int serviceToAdd = EasyScanner.nextInt();
+                    if (serviceToAdd > 3) {
+                        System.out.println("Please try again: the value which was specified is invalid!");
+                        return;
+                    }
                     addExtraServices(serviceToAdd, emergencyToUpdate);
                     break;
                 case 2:
