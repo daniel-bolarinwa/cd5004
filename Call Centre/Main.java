@@ -46,7 +46,7 @@ public class Main extends FileManager {
     }
 
     static void recordEmergency() {
-        int emergencyId = emergencies.emergencyList.size() + 1;
+        int emergencyId = setEmergencyId();
         System.out.println("Hi, emergency services! What emergency service do you need?");
         System.out.println("<---Please choose enter (1-3) for one the following---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
         int serviceOption = EasyScanner.nextInt();
@@ -377,5 +377,9 @@ public class Main extends FileManager {
             "Status,",
             "CallerDetails"
         );
+    }
+
+    static int setEmergencyId() {
+        return emergencies.emergencyList.get(emergencies.emergencyList.size() -1).id + 1;
     }
 }
