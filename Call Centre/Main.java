@@ -380,6 +380,10 @@ public class Main extends FileManager {
     }
 
     static int setEmergencyId() {
-        return emergencies.emergencyList.get(emergencies.emergencyList.size() -1).id + 1;
+        if (emergencies.emergencyList.size() > 0) {
+            return emergencies.emergencyList.get(emergencies.emergencyList.size() -1).id + 1;
+        }
+
+        return 1;
     }
 }
