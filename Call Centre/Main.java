@@ -133,7 +133,7 @@ public class Main extends FileManager {
                     return;
                 }
                 addExtraServices(serviceToAdd, emergencyToUpdate);
-                break;
+                return;
             case 2:
                 System.out.println("\n<---Enter new description: --->");
                 String descriptionToUpdate = EasyScanner.nextString();
@@ -141,6 +141,7 @@ public class Main extends FileManager {
                     emergencyToUpdate.setDescription(descriptionToUpdate);
                 } catch (NullPointerException e) {
                     System.out.println("The emergency id you have specified doesn't exist please try again entering a valid id!");
+                    return;
                 }
                 break;
             case 3:
@@ -154,6 +155,7 @@ public class Main extends FileManager {
                     emergencyToUpdate.setLocation(locationToUpdate);
                 } catch (NullPointerException e) {
                     System.out.println("The emergency id you have specified doesn't exist please try again entering a valid id!");
+                    return;
                 }                    
                 break;
             case 4:
@@ -185,6 +187,7 @@ public class Main extends FileManager {
                     emergencyToUpdate.setCallerDetails(caller);
                 } catch (NullPointerException e) {
                     System.out.println("The emergency id you have specified doesn't exist please try again entering a valid id!");
+                    return;
                 }                    
                 break;
             case 5:
@@ -201,6 +204,7 @@ public class Main extends FileManager {
                     }
                 } catch (NullPointerException e) {
                     System.out.println("The emergency id you have specified doesn't exist please try again entering a valid id!");
+                    return;
                 }                    
                 break;
             case 6:
@@ -325,6 +329,7 @@ public class Main extends FileManager {
             }
         } catch (NullPointerException e) {
             System.out.println("The emergency id you have specified doesn't exist please try again entering a valid id!");
+            return;
         }
     }
 
