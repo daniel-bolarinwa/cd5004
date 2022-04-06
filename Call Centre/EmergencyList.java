@@ -11,9 +11,14 @@ public class EmergencyList {
        emergencyList = new CopyOnWriteArrayList<Emergency>();
     }
 
-    public Emergency getEmergencyByPosition(int positionIn) {   
-        // take one off logical position to get ArrayList position
-        return emergencyList.get(positionIn-1);
+    public Emergency getEmergencyByID(int emergencyId) {   
+        for (Emergency emergency: emergencyList) {
+            if (emergency.id == emergencyId) {
+                return emergency;
+            }
+        }
+
+        return null;
 	}
 
     public void displayAllEmergencies() {

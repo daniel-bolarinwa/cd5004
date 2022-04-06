@@ -118,90 +118,101 @@ public class Main extends FileManager {
             // Display all emergencies
             displayheaders();
             emergencies.displayAllEmergencies();
-            int option = EasyScanner.nextInt();
+            int id = EasyScanner.nextInt();
 
-            if (option <= emergencies.emergencyList.size() && option > 0) {
-                Emergency emergencyToUpdate = emergencies.getEmergencyByPosition(option);
-                System.out.println("\n<---Please choose what you would like to update about the emergency by entering (1-6) for one the following--->\n1. Required Services \n2. Description \n3. Location \n4. Caller Details \n5. Status \n6. Return to main menu");
+            Emergency emergencyToUpdate = emergencies.getEmergencyByID(id);
+            System.out.println("\n<---Please choose what you would like to update about the emergency by entering (1-6) for one the following--->\n1. Required Services \n2. Description \n3. Location \n4. Caller Details \n5. Status \n6. Return to main menu");
 
-                int secondOption = EasyScanner.nextInt();
-                switch (secondOption) {
-                case 1:
-                    System.out.println("\n<---Please enter (1-3) for the service you would like to add to the emergency---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
-                    int serviceToAdd = EasyScanner.nextInt();
-                    if (serviceToAdd > 3 || serviceToAdd < 1) {
-                        System.out.println("Please try again: the value which was specified is invalid!");
-                        return;
-                    }
-                    addExtraServices(serviceToAdd, emergencyToUpdate);
-                    break;
-                case 2:
-                    System.out.println("\n<---Enter new description: --->");
-                    String descriptionToUpdate = EasyScanner.nextString();
+            int secondOption = EasyScanner.nextInt();
+            switch (secondOption) {
+            case 1:
+                System.out.println("\n<---Please enter (1-3) for the service you would like to add to the emergency---> \n1. Fire Brigade \n2. Police \n3. Ambulance");
+                int serviceToAdd = EasyScanner.nextInt();
+                if (serviceToAdd > 3 || serviceToAdd < 1) {
+                    System.out.println("Please try again: the value which was specified is invalid!");
+                    return;
+                }
+                addExtraServices(serviceToAdd, emergencyToUpdate);
+                break;
+            case 2:
+                System.out.println("\n<---Enter new description: --->");
+                String descriptionToUpdate = EasyScanner.nextString();
+                try {
                     emergencyToUpdate.setDescription(descriptionToUpdate);
-                    break;
-                case 3:
-                    System.out.println("\n<---Enter new location: --->");
-                    String locationToUpdate = EasyScanner.nextString();
-                    while (!locationToUpdate.matches("[a-zA-Z0-9\\s]+")) {
-                        System.out.println("Location can only contain alphanumeric characters. Please try again.");
-                        locationToUpdate = EasyScanner.nextString();
-                    }
+                } catch (NullPointerException e) {
+                    System.out.println("The emergency id you have specified doesn't exist please try again entering a valid id!");
+                }
+                break;
+            case 3:
+                System.out.println("\n<---Enter new location: --->");
+                String locationToUpdate = EasyScanner.nextString();
+                while (!locationToUpdate.matches("[a-zA-Z0-9\\s]+")) {
+                    System.out.println("Location can only contain alphanumeric characters. Please try again.");
+                    locationToUpdate = EasyScanner.nextString();
+                }
+                try {
                     emergencyToUpdate.setLocation(locationToUpdate);
-                    break;
-                case 4:
-                    System.out.println("\n<---Please provide updated Caller details--->");
+                } catch (NullPointerException e) {
+                    System.out.println("The emergency id you have specified doesn't exist please try again entering a valid id!");
+                }                    
+                break;
+            case 4:
+                System.out.println("\n<---Please provide updated Caller details--->");
 
-                    System.out.println("\n<---Please provide your personal details below--->");
+                System.out.println("\n<---Enter Caller full name: --->");
+                String callerFullNameToUpdate = EasyScanner.nextString();
+                while (!callerFullNameToUpdate.matches("[a-zA-Z\\s]+")) {
+                    System.out.println("Name can only contain alpabetical characters. Please try again.");
+                    callerFullNameToUpdate = EasyScanner.nextString();
+                }
 
-                    System.out.println("\n<---Enter Caller full name: --->");
-                    String callerFullNameToUpdate = EasyScanner.nextString();
-                    while (!callerFullNameToUpdate.matches("[a-zA-Z\\s]+")) {
-                        System.out.println("Name can only contain alpabetical characters. Please try again.");
-                        callerFullNameToUpdate = EasyScanner.nextString();
-                    }
+                System.out.println("\n<---Enter Caller age: --->");
+                int callerAgeToUpdate = EasyScanner.nextInt();
+                while (callerAgeToUpdate <= 0 || callerAgeToUpdate >= 150) {
+                    System.out.println("Age must be greater than 0 and less than 150! Please try again.");
+                    callerAgeToUpdate = EasyScanner.nextInt();
+                }
 
-                    System.out.println("\n<---Enter Caller age: --->");
-                    int callerAgeToUpdate = EasyScanner.nextInt();
-                    while (callerAgeToUpdate <= 0 || callerAgeToUpdate >= 150) {
-                        System.out.println("Age must be greater than 0 and less than 150! Please try again.");
-                        callerAgeToUpdate = EasyScanner.nextInt();
-                    }
+                System.out.println("\n<---Enter Caller phone number: --->");
+                String callerPhoneNumberToUpdate = EasyScanner.nextString();
+                while (callerPhoneNumberToUpdate.length() != 11 || !callerPhoneNumberToUpdate.matches("[0-9]+")) {
+                    System.out.println("Phone number must have a length of 11! Please try again entering 11 digits.");
+                    callerPhoneNumberToUpdate = EasyScanner.nextString();
+                }
 
-                    System.out.println("\n<---Enter Caller phone number: --->");
-                    String callerPhoneNumberToUpdate = EasyScanner.nextString();
-                    while (callerPhoneNumberToUpdate.length() != 11 || !callerPhoneNumberToUpdate.matches("[0-9]+")) {
-                        System.out.println("Phone number must have a length of 11! Please try again entering 11 digits.");
-                        callerPhoneNumberToUpdate = EasyScanner.nextString();
-                    }
-
-                    Caller caller = new Caller(callerFullNameToUpdate, callerAgeToUpdate, callerPhoneNumberToUpdate);
+                Caller caller = new Caller(callerFullNameToUpdate, callerAgeToUpdate, callerPhoneNumberToUpdate);
+                try {
                     emergencyToUpdate.setCallerDetails(caller);
-                    break;
-                case 5:
-                    System.out.println("\n<---Please choose the status to set by entering 1 or 2 ---> \n1. PENDING \n2. RESOLVED");
-                    int statusOption = EasyScanner.nextInt();
+                } catch (NullPointerException e) {
+                    System.out.println("The emergency id you have specified doesn't exist please try again entering a valid id!");
+                }                    
+                break;
+            case 5:
+                System.out.println("\n<---Please choose the status to set by entering 1 or 2 ---> \n1. PENDING \n2. RESOLVED");
+                int statusOption = EasyScanner.nextInt();
+                try {
                     if (statusOption == 1) {
                         emergencyToUpdate.status = Emergency.Status.PENDING;
                     } else if (statusOption == 2) {
                         emergencyToUpdate.status = Emergency.Status.RESOLVED;
                     } else {
                         System.out.println("The value you have enter is invalid please try again later entering 1 or 2!");
+                        return;
                     }
-                    break;
-                case 6:
-                    System.out.println("\nreturning to main menu...");
-                    break;
-                default:
-                    System.out.println("Please try again: the choice which was specified is invalid! Enter 1-6 only");
-                    return;
-                }
-
-                System.out.println("Emergency updated");
-                writeToFile("Emergencies.csv", emergencies);
+                } catch (NullPointerException e) {
+                    System.out.println("The emergency id you have specified doesn't exist please try again entering a valid id!");
+                }                    
+                break;
+            case 6:
+                System.out.println("\nreturning to main menu...");
+                break;
+            default:
+                System.out.println("Please try again: the choice which was specified is invalid! Enter 1-6 only");
                 return;
             }
-            System.out.println("The emergency id you specified is invalid! Please try again later with a valid emergency id.");
+
+            System.out.println("Emergency updated");
+            writeToFile("Emergencies.csv", emergencies);
             return;
         }
 
@@ -298,7 +309,8 @@ public class Main extends FileManager {
     }
 
     static void addExtraServices(int serviceOption, Emergency emergencyToUpdate) {
-        switch (serviceOption) {
+        try {
+            switch (serviceOption) {
             case 1:
                 emergencyToUpdate.fireBrigade = true;
                 break;
@@ -310,6 +322,9 @@ public class Main extends FileManager {
                 break;
             default:
                 System.out.println("The service you have chosen isn't valid. Please try again...");
+            }
+        } catch (NullPointerException e) {
+            System.out.println("The emergency id you have specified doesn't exist please try again entering a valid id!");
         }
     }
 
