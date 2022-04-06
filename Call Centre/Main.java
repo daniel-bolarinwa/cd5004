@@ -152,23 +152,25 @@ public class Main extends FileManager {
                 case 4:
                     System.out.println("\n<---Please provide updated Caller details--->");
 
+                    System.out.println("\n<---Please provide your personal details below--->");
+
                     System.out.println("\n<---Enter Caller full name: --->");
                     String callerFullNameToUpdate = EasyScanner.nextString();
                     while (!callerFullNameToUpdate.matches("[a-zA-Z\\s]+")) {
                         System.out.println("Name can only contain alpabetical characters. Please try again.");
                         callerFullNameToUpdate = EasyScanner.nextString();
-                    };
+                    }
 
                     System.out.println("\n<---Enter Caller age: --->");
                     int callerAgeToUpdate = EasyScanner.nextInt();
-                    while (callerAgeToUpdate <= 0) {
-                        System.out.println("Age must be greater than 0! Please try again.");
+                    while (callerAgeToUpdate <= 0 || callerAgeToUpdate >= 150) {
+                        System.out.println("Age must be greater than 0 and less than 150! Please try again.");
                         callerAgeToUpdate = EasyScanner.nextInt();
                     }
 
                     System.out.println("\n<---Enter Caller phone number: --->");
                     String callerPhoneNumberToUpdate = EasyScanner.nextString();
-                    while (callerPhoneNumberToUpdate.length() != 11 && !callerPhoneNumberToUpdate.matches("[0-9]+")) {
+                    while (callerPhoneNumberToUpdate.length() != 11 || !callerPhoneNumberToUpdate.matches("[0-9]+")) {
                         System.out.println("Phone number must have a length of 11! Please try again entering 11 digits.");
                         callerPhoneNumberToUpdate = EasyScanner.nextString();
                     }
@@ -183,6 +185,8 @@ public class Main extends FileManager {
                         emergencyToUpdate.status = Emergency.Status.PENDING;
                     } else if (statusOption == 2) {
                         emergencyToUpdate.status = Emergency.Status.RESOLVED;
+                    } else {
+                        System.out.println("The value you have enter is invalid please try again later entering 1 or 2!");
                     }
                     break;
                 case 6:
