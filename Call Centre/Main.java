@@ -2,6 +2,7 @@
  *  @author Daniel Bolarinwa
  */
 
+// TODO: ADD COMMENTS TO CODE!!!!!!!!!!!!!!!!!!!!!
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Main extends FileManager {
@@ -259,7 +260,7 @@ public class Main extends FileManager {
                 tempEmergencyList = filterByService(serviceOption);
 
                 if (tempEmergencyList.size() == 0) {
-                    System.out.println("Service option not found. Please try again later!");
+                    System.out.println("No emergencies found for the specified status. Please try again!");
                 } else {
                     displayheaders();
                     for (Emergency tempEmergency: tempEmergencyList) {
@@ -337,21 +338,21 @@ public class Main extends FileManager {
         CopyOnWriteArrayList<Emergency> filteredServiceList = new CopyOnWriteArrayList<Emergency>();
         for (Emergency emergency: emergencies.emergencyList) {
             switch (serviceOption) {
-                case 1:
-                    if (emergency.fireBrigade == true) {
-                        filteredServiceList.add(emergency);
-                    }
-                    break;
-                case 2:
-                    if (emergency.police == true) {
-                        filteredServiceList.add(emergency);
-                    }
-                    break;
-                case 3:
-                    if (emergency.ambulance == true) {
-                        filteredServiceList.add(emergency);
-                    }
-                    break;                    
+            case 1:
+                if (emergency.fireBrigade == true) {
+                    filteredServiceList.add(emergency);
+                }
+                break;
+            case 2:
+                if (emergency.police == true) {
+                    filteredServiceList.add(emergency);
+                }
+                break;
+            case 3:
+                if (emergency.ambulance == true) {
+                    filteredServiceList.add(emergency);
+                }
+                break;               
             }
         }
         return filteredServiceList;
