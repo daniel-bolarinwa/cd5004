@@ -2,6 +2,10 @@ import java.util.Scanner;
 
 public class EasyScanner
 {
+	/** wrapper for using scanner to retrieve integer user input
+	 *  This now includes user input validation to ensure user only inputs integer
+	 * @return the integer the user inputted
+     */
 	public static int nextInt()
 	{
 		
@@ -15,6 +19,9 @@ public class EasyScanner
 		return i;
 	}
 	
+	/** wrapper for using scanner to retrieve string user input
+	 * @return the string the user inputted
+     */
 	public static String nextString()
 	{
 		Scanner sc = new Scanner(System.in);

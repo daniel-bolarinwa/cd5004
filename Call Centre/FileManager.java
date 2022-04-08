@@ -1,11 +1,18 @@
+/** Class used to manage file handling for persistent data storage
+ *  @author Daniel Bolarinwa
+ */
+
 import java.io.FileWriter;
 import java.time.LocalDateTime;
-
 import java.io.FileReader;
 import java.io.BufferedReader;
 
 public class FileManager {
 
+    /** Writes list of emergencies currently in the system to the file with the specified file name
+     * @param fileName
+     * @param emergencyListToWrite
+     */
     static void writeToFile(String fileName, EmergencyList emergencyListToWrite) {
         try {
             FileWriter csvWriter = new FileWriter(fileName);
@@ -40,6 +47,12 @@ public class FileManager {
         }        
     }
 
+    /** Reads emergency data from the specified file
+     *  parses the data into relevant emergency atttributes 
+     *  which are loaded back into an empty list of emergencies
+     * @param fileName
+     * @param emergencyListToRead
+     */
     static void readFromFile(String fileName, EmergencyList emergencyListToRead) {
         try {
             BufferedReader csvReader = new BufferedReader(new FileReader(fileName));

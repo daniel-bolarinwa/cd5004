@@ -11,6 +11,11 @@ public class EmergencyList {
        emergencyList = new CopyOnWriteArrayList<Emergency>();
     }
 
+    /** retrieves an emergency in the list based on id input parameter
+     *  This is to ensure that the use of auto incremental emergency id doesn't result in duplicates
+     *  @param emergencyId
+     *  @return the emergency that matches the input id, if no matches we return null
+     */
     public Emergency getEmergencyByID(int emergencyId) {   
         for (Emergency emergency: emergencyList) {
             if (emergency.id == emergencyId) {
