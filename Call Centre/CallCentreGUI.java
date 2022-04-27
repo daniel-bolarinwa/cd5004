@@ -2,7 +2,7 @@
  *  @author Daniel Bolarinwa
  */
 
-import java.text.NumberFormat;
+// TODO: ADD EXTENSIVE INPUT VALIDATION IF I HAVE TIME!!!
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -26,7 +26,15 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.control.TextInputDialog;
 
+import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.Map;
+
 public class CallCentreGUI extends Application {
+    // attributes
+    private Map<String, Boolean> serviceMap = new HashMap<String, Boolean>();
+    private EmergencyList emergencies = new EmergencyList();
+
     // visual components
     private Label headingLabel = new Label("Emergency Call Centre");
     private Button recordButton = new Button("Record an emergency");
@@ -48,7 +56,7 @@ public class CallCentreGUI extends Application {
     private TextField emergencyDescriptionField =  new TextField();
     private Label emergencyLocationLabel = new Label("Emergency Location");
     private TextField emergencyLocationField =  new TextField();
-    private EmergencyList emergencies = new EmergencyList();
+    private TextArea appConsole  = new TextArea();
 
     @Override
     /** Initialises the screen 
@@ -57,6 +65,7 @@ public class CallCentreGUI extends Application {
     public void start(Stage stage) {
         FileManager.readFromFile("Emergencies.csv", emergencies);
         headingLabel.setFont(new Font("Calibri", 40));
+        appConsole.setMaxSize(400, 200);
             
         // event handler for all menu option
         recordButton.setOnAction( e -> recordEmergencyHandler(stage));
@@ -72,7 +81,7 @@ public class CallCentreGUI extends Application {
         // create VBox
         VBox root = new VBox(10);
         // add all components to VBox
-        root.getChildren().addAll(headingLabel, recordButton, updateButton, archiveButton, reportsButton, saveAndQuitButton);
+        root.getChildren().addAll(headingLabel, recordButton, updateButton, archiveButton, reportsButton, saveAndQuitButton, appConsole);
         // create the scene
         Scene scene = new Scene(root, Color.LIGHTBLUE);
 
@@ -108,6 +117,9 @@ public class CallCentreGUI extends Application {
 
     private void recordEmergencyHandler(Stage stage) {
         // TODO: add logic
+        serviceMap.put("fire", false);
+        serviceMap.put("ambulance", false);
+        serviceMap.put("police", false);
 
         // create VBox
         VBox root = new VBox(10);
@@ -130,12 +142,27 @@ public class CallCentreGUI extends Application {
         // create the scene
         Scene scene = new Scene(root, Color.LIGHTBLUE);
 
+        // customise buttons
+        fireBrigade.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        ambulance.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        police.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        reusableSaveButton.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+
+        Label recordEmergencyHeader = new Label("Please specify your emergency's details");
+        recordEmergencyHeader.setFont(new Font("Calibri", 40));
+        Label serviceSubheader = new Label("Please specify the emergency services you need (you can select multiple):");
+
         HBox emergencyServicePane = new HBox(10);
         HBox callerDetailsPane = new HBox(10);
         HBox emergencyDetailsPane = new HBox(10);
         HBox saveEmergencyPane = new HBox(10);
 
-        emergencyServicePane.getChildren().addAll(fireBrigade, ambulance, police);
+        fireBrigade.setOnAction(e -> setFireService());
+        ambulance.setOnAction(e -> setAmbulanceService());
+        police.setOnAction(e -> setPoliceService());
+        reusableSaveButton.setOnAction(e -> saveEmergency());
+
+        emergencyServicePane.getChildren().addAll(serviceSubheader, fireBrigade, ambulance, police);
         callerDetailsPane.getChildren().addAll(callerNameLabel, callerNameField, callerAgeLabel, callerAgeField, callerPhoneNumberLabel, callerPhoneNumberField);
         emergencyDetailsPane.getChildren().addAll(emergencyDescriptionLabel, emergencyDescriptionField, emergencyLocationLabel, emergencyLocationField);
         saveEmergencyPane.getChildren().addAll(reusableSaveButton);
@@ -147,8 +174,10 @@ public class CallCentreGUI extends Application {
         saveEmergencyPane.setAlignment(Pos.CENTER);
 
         // add all components to VBox
-        root.getChildren().addAll(emergencyServicePane, callerDetailsPane, emergencyDetailsPane, saveEmergencyPane);
+        root.getChildren().addAll(recordEmergencyHeader, emergencyServicePane, callerDetailsPane, emergencyDetailsPane, saveEmergencyPane, appConsole);
 
+        // reset console
+        appConsole.setText("");
         stage.setScene(scene);
         stage.setTitle("Emergency Call Centre");
         stage.setResizable(false);
@@ -166,7 +195,7 @@ public class CallCentreGUI extends Application {
             }
         }
 
-        System.out.println("All emergencies which were in 'RESOLVED' status have now been archived");
+        appConsole.setText("All emergencies which were in 'RESOLVED' status have now been archived");
         FileManager.writeToFile("Emergencies.csv", emergencies);
         // TODO: display pop up which informs the user of successful archival
     }
@@ -175,12 +204,69 @@ public class CallCentreGUI extends Application {
         // TODO: add logic
     }
 
+    /** Saves current state of emergency data records in the system
+     *  loads to csv for retrieval upon next execution of program
+     */
     private void saveAndQuitHandler() {
         // TODO: implement pop up to confirm if user wants to quit
         
         // write current state information to file, whether complete or not write regardless
         FileManager.writeToFile("Emergencies.csv", emergencies);
         Platform.exit();
+    }
+
+    private void setFireService() {
+        serviceMap.put("fire", true);
+        fireBrigade.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(10), Insets.EMPTY)));
+    }
+
+    private void setAmbulanceService() {
+        serviceMap.put("ambulance", true);
+        ambulance.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(10), Insets.EMPTY)));
+    }
+
+    private void setPoliceService() {
+        serviceMap.put("police", true);
+        police.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(10), Insets.EMPTY)));
+    }
+
+    /** Adds emergency to the global list of emergencies
+     */
+    private void saveEmergency() {
+        int emergencyId = setEmergencyId();
+        String nameEntered =  callerNameField.getText();
+        String ageEntered =  callerAgeField.getText();
+        String numberEntered =  callerPhoneNumberField.getText();
+        String descriptionEntered =  emergencyDescriptionField.getText();
+        String locationEntered =  emergencyLocationField.getText();
+
+        if (nameEntered.length() == 0 || ageEntered.length() == 0 || numberEntered.length() == 0 || descriptionEntered.length() == 0 || locationEntered.length() == 0) {
+            appConsole.setText("None of the fields should be empty! Please populate all fields appropriately");
+        } else {
+            Caller caller = new Caller(nameEntered, Integer.parseInt(ageEntered), numberEntered);
+            Emergency emergency = new Emergency(emergencyId, descriptionEntered, locationEntered);
+            emergency.setCallerDetails(caller);
+            emergency.fireBrigade = serviceMap.get("fire");
+            emergency.ambulance = serviceMap.get("ambulance");
+            emergency.police = serviceMap.get("police");
+            emergencies.emergencyList.add(emergency);
+            FileManager.writeToFile("Emergencies.csv", emergencies);
+            appConsole.setText("Your emergency was successfully recorded!");
+        }
+
+        // TODO: add reset to main menu upon completion feature
+    }
+
+    /** dynamic auto incremental 'id' generation logic
+     *  This allows users to avoid having entering the same id accidentally for diffrent emergencies
+     * @return the newly generated id for the emergency that is currently being recorded
+     */
+    private int setEmergencyId() {
+        if (emergencies.emergencyList.size() > 0) {
+            return emergencies.emergencyList.get(emergencies.emergencyList.size() -1).id + 1;
+        }
+
+        return 1;
     }
 
     public static void main(String[] args) {
