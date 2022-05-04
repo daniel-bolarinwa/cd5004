@@ -217,12 +217,12 @@ public class CallCentreGUI extends Application {
 
         // reset details of stage
         stage.setWidth(1000);
-        stage.setHeight(500);
+        stage.setHeight(700);
 
         // set details of VBox
         root.setAlignment(Pos.CENTER);
-        root.setMinSize(1000, 500);
-        root.setMaxSize(1000, 500);
+        root.setMinSize(1000, 700);
+        root.setMaxSize(1000, 700);
 
         appConsole.setMaxSize(900, 200);
         errorConsole.setMaxSize(900, 200);
@@ -309,6 +309,9 @@ public class CallCentreGUI extends Application {
         root.setAlignment(Pos.CENTER);
         root.setMinSize(800, 500);
         root.setMaxSize(800, 500);
+
+        appConsole.setMaxSize(750, 350);
+        errorConsole.setMaxSize(750, 50);
 
         // customise VBox
         root.setBorder(new Border(
@@ -416,8 +419,8 @@ public class CallCentreGUI extends Application {
             errorConsole.setText("None of the fields should be empty! Please populate all fields appropriately");
         } else if (!nameEntered.matches("[a-zA-Z\\s]+")) {
             errorConsole.setText("Name should only contain alphabets/letters, please amend the name field!");
-        } else if (!ageEntered.matches("[0-9]+") || Integer.parseInt(ageEntered) >= 150) {
-            errorConsole.setText("Age should only contain numbers and be less than 150, please amend the age field!");
+        } else if (!ageEntered.matches("[0-9]+") || Integer.parseInt(ageEntered) <= 0 || Integer.parseInt(ageEntered) >= 150) {
+            errorConsole.setText("Age should only contain numbers and be betwwen 0 and 150, please amend the age field!");
         } else if (numberEntered.length() != 11 || !numberEntered.matches("[0-9]+")) {
             errorConsole.setText("Phone Number should only contain numbers and must have a length of 11, please amend the phone number field!");
         } else if (!locationEntered.matches("[a-zA-Z0-9\\s]+") || locationEntered.length() < 6 || locationEntered.length() > 8) {
@@ -504,8 +507,8 @@ public class CallCentreGUI extends Application {
         }
 
         if (callerAgeField.getText().length() != 0) {
-            if (!callerAgeField.getText().matches("[0-9]+") || Integer.parseInt(callerAgeField.getText()) >= 150) {
-                errorConsole.setText("Age should only contain numbers and be less than 150, please amend the age field!");
+            if (!callerAgeField.getText().matches("[0-9]+") || Integer.parseInt(callerAgeField.getText()) <= 0 || Integer.parseInt(callerAgeField.getText()) >= 150) {
+                errorConsole.setText("Age should only contain numbers and be betwwen 0 and 150, please amend the age field!");
                 validator = false;
             } else {
                 ageEntered = Integer.parseInt(callerAgeField.getText());
@@ -540,7 +543,13 @@ public class CallCentreGUI extends Application {
         String id = "";
 
         if (emergencyIdField.getText().length() != 0) {
-            id = emergencyIdField.getText();
+            if (!emergencyIdField.getText().matches("[0-9]+") || emergencies.getEmergencyByID(Integer.parseInt(emergencyIdField.getText())) == null) {
+                errorConsole.setText("Emergency with ID (" + emergencyIdField.getText() + ") doesn't exist so cannot be resolved, please specify a valid ID!");
+            } else {
+                id = emergencyIdField.getText();
+            }
+        } else {
+            errorConsole.setText("Emergency with ID (" + emergencyIdField.getText() + ") doesn't exist, please specify a valid ID!");
         }
 
         Emergency emergencyToUpdate = emergencies.getEmergencyByID(Integer.parseInt(id));
