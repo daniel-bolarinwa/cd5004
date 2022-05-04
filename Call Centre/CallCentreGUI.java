@@ -24,9 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.scene.control.TextInputDialog;
 
-import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,51 +38,55 @@ public class CallCentreGUI extends Application {
     private Button recordButton = new Button("Record an emergency");
     private Button updateButton = new Button("Update an emergency's details");
     private Button archiveButton = new Button("Archive resolved emergencies");
-    private Button reportsButton =  new  Button("Generate emergency reports");
-    private Button saveAndQuitButton  = new Button("Save and Quit");
+    private Button reportsButton = new Button("Generate emergency reports");
+    private Button saveAndQuitButton = new Button("Save and Quit");
     private Button fireBrigade = new Button("Fire Brigade");
     private Button ambulance = new Button("Ambulance");
     private Button police = new Button("Police");
     private Button reusableSaveButton = new Button("Save");
     private Button returnToMenuButton = new Button("Return to Main Menu");
     private Label callerNameLabel = new Label("Caller Name");
-    private TextField callerNameField =  new TextField();
+    private TextField callerNameField = new TextField();
     private Label callerAgeLabel = new Label("Caller Age");
-    private TextField callerAgeField =  new TextField();
+    private TextField callerAgeField = new TextField();
     private Label callerPhoneNumberLabel = new Label("Caller Phone Number");
-    private TextField callerPhoneNumberField =  new TextField();
+    private TextField callerPhoneNumberField = new TextField();
     private Label emergencyDescriptionLabel = new Label("Emergency Description");
-    private TextField emergencyDescriptionField =  new TextField();
+    private TextField emergencyDescriptionField = new TextField();
     private Label emergencyLocationLabel = new Label("Emergency Location");
-    private TextField emergencyLocationField =  new TextField();
+    private TextField emergencyLocationField = new TextField();
     private Label updateCallerNameLabel = new Label("New Caller Name");
     private Label updateCallerAgeLabel = new Label("New Caller Age");
     private Label updateCallerPhoneNumberLabel = new Label("New Caller Phone Number");
     private Label updateEmergencyDescriptionLabel = new Label("New Emergency Description");
     private Label updateEmergencyLocationLabel = new Label("New Emergency Location");
-    private Label emergencyIdLabel =  new Label("ID (required, must specify!):");
-    private TextField emergencyIdField =  new TextField();
-    private Label resolvedLabel =  new Label("Mark as resolved:");
-    private Button resolvedButton =  new Button("Resolve");
+    private Label emergencyIdLabel = new Label("ID (required, must specify!):");
+    private TextField emergencyIdField = new TextField();
+    private Label resolvedLabel = new Label("Mark as resolved:");
+    private Button resolvedButton = new Button("Resolve");
     private Button pendingButton = new Button("Pending");
-    private Button displayAllButton =  new Button("All");
-    private Button displayByResolvedButton =  new Button("Resolved");
-    private TextArea appConsole  = new TextArea();
+    private Button displayAllButton = new Button("All");
+    private Button displayByResolvedButton = new Button("Resolved");
+    private TextArea appConsole = new TextArea();
+    private TextArea errorConsole = new TextArea();
 
     @Override
-    /** Initialises the screen 
-     *  @param stage:   The scene's stage 
+    /**
+     * Initialises the screen
+     * 
+     * @param stage: The scene's stage
      */
     public void start(Stage stage) {
         headingLabel.setFont(new Font("Calibri", 40));
         appConsole.setMaxSize(400, 200);
-            
+        errorConsole.setMaxSize(400, 200);
+
         // event handler for all menu option
-        recordButton.setOnAction( e -> recordEmergencyHandler(stage));
-        updateButton.setOnAction( e -> updateEmergencyHandler(stage));
-        archiveButton.setOnAction( e -> archiveEmergenciesHandler());
-        reportsButton.setOnAction( e -> generateReportsHandler(stage));
-        saveAndQuitButton.setOnAction( e -> saveAndQuitHandler());
+        recordButton.setOnAction(e -> recordEmergencyHandler(stage));
+        updateButton.setOnAction(e -> updateEmergencyHandler(stage));
+        archiveButton.setOnAction(e -> archiveEmergenciesHandler());
+        reportsButton.setOnAction(e -> generateReportsHandler(stage));
+        saveAndQuitButton.setOnAction(e -> saveAndQuitHandler());
 
         // set details of stage
         stage.setWidth(500);
@@ -93,17 +95,18 @@ public class CallCentreGUI extends Application {
         // create VBox
         VBox root = new VBox(10);
         // add all components to VBox
-        root.getChildren().addAll(headingLabel, recordButton, updateButton, archiveButton, reportsButton, saveAndQuitButton, appConsole);
+        root.getChildren().addAll(headingLabel, recordButton, updateButton, archiveButton, reportsButton, saveAndQuitButton, appConsole, errorConsole);
         // create the scene
         Scene scene = new Scene(root, Color.LIGHTBLUE);
 
         // set details of VBox
         root.setAlignment(Pos.CENTER);
         root.setMinSize(500, 400);
-        root.setMaxSize(500, 400);    
+        root.setMaxSize(500, 400);
 
         // customise VBox
-        root.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(2))));
+        root.setBorder(
+                new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(2))));
         root.setBackground(Background.EMPTY);
 
         // set alignment of buttons
@@ -114,17 +117,22 @@ public class CallCentreGUI extends Application {
         saveAndQuitButton.setAlignment(Pos.CENTER);
 
         // customise buttons
-        recordButton.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
-        updateButton.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
-        archiveButton.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
-        reportsButton.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
-        saveAndQuitButton.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        recordButton.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        updateButton.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        archiveButton.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        reportsButton.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        saveAndQuitButton.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
 
         // configure the stage and make the stage visible
         stage.setScene(scene);
         stage.setTitle("Emergency Call Centre");
         stage.setResizable(false);
-        stage.show(); 
+        stage.show();
     }
 
     private void recordEmergencyHandler(Stage stage) {
@@ -134,6 +142,7 @@ public class CallCentreGUI extends Application {
 
         // reset console
         appConsole.setText("");
+        errorConsole.setText("");
 
         // create VBox
         VBox root = new VBox(10);
@@ -145,22 +154,28 @@ public class CallCentreGUI extends Application {
         // set details of VBox
         root.setAlignment(Pos.CENTER);
         root.setMinSize(800, 500);
-        root.setMaxSize(800, 500);  
+        root.setMaxSize(800, 500);
 
         // customise VBox
-        root.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(2))));
+        root.setBorder(new Border(
+                new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(2))));
         root.setBackground(Background.EMPTY);
 
-        reusableSaveButton.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        reusableSaveButton.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
 
         // create the scene
         Scene scene = new Scene(root, Color.LIGHTBLUE);
 
         // customise buttons
-        fireBrigade.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
-        ambulance.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
-        police.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
-        reusableSaveButton.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        fireBrigade.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        ambulance.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        police.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        reusableSaveButton.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
 
         Label recordEmergencyHeader = new Label("Record Emergency");
         recordEmergencyHeader.setFont(new Font("Calibri", 40));
@@ -188,7 +203,7 @@ public class CallCentreGUI extends Application {
         saveEmergencyPane.setAlignment(Pos.CENTER);
 
         // add all components to VBox
-        root.getChildren().addAll(recordEmergencyHeader, emergencyServicePane, callerDetailsPane, emergencyDetailsPane, saveEmergencyPane, appConsole);
+        root.getChildren().addAll(recordEmergencyHeader, emergencyServicePane, callerDetailsPane, emergencyDetailsPane, saveEmergencyPane, appConsole, errorConsole);
 
         stage.setScene(scene);
         stage.setTitle("Emergency Call Centre");
@@ -207,12 +222,14 @@ public class CallCentreGUI extends Application {
         // set details of VBox
         root.setAlignment(Pos.CENTER);
         root.setMinSize(1000, 500);
-        root.setMaxSize(1000, 500);  
+        root.setMaxSize(1000, 500);
 
         appConsole.setMaxSize(900, 200);
+        errorConsole.setMaxSize(900, 200);
 
         // customise VBox
-        root.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(2))));
+        root.setBorder(new Border(
+                new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(2))));
         root.setBackground(Background.EMPTY);
 
         // create the scene
@@ -231,10 +248,14 @@ public class CallCentreGUI extends Application {
         HBox saveEmergencyPane = new HBox(10);
 
         // customise buttons
-        fireBrigade.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
-        ambulance.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
-        police.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
-        reusableSaveButton.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        fireBrigade.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        ambulance.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        police.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        reusableSaveButton.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
 
         fireBrigade.setOnAction(e -> setFireService());
         ambulance.setOnAction(e -> setAmbulanceService());
@@ -258,7 +279,7 @@ public class CallCentreGUI extends Application {
         saveEmergencyPane.setAlignment(Pos.CENTER);
 
         // add all components to VBox
-        root.getChildren().addAll(updateEmergencyHeader, subHeader, emergencyIdPane, emergencyServicePane, callerDetailsPane, emergencyDetailsPane, resolveEmergencyPane, saveEmergencyPane, appConsole);
+        root.getChildren().addAll(updateEmergencyHeader, subHeader, emergencyIdPane, emergencyServicePane, callerDetailsPane, emergencyDetailsPane, resolveEmergencyPane, saveEmergencyPane, appConsole, errorConsole);
 
         // reset console
         displayEmergencies();
@@ -267,13 +288,13 @@ public class CallCentreGUI extends Application {
     }
 
     private void archiveEmergenciesHandler() {
-        for(Emergency emergency: emergencies.emergencyList) {
+        for (Emergency emergency : emergencies.emergencyList) {
             if (emergency.status == Emergency.Status.RESOLVED) {
                 emergencies.emergencyList.remove(emergency);
             }
         }
 
-        appConsole.setText("All emergencies which were in 'RESOLVED' status have now been archived");
+        appConsole.setText("All emergencies which had 'RESOLVED' status have now been archived");
     }
 
     private void generateReportsHandler(Stage stage) {
@@ -287,32 +308,41 @@ public class CallCentreGUI extends Application {
         // set details of VBox
         root.setAlignment(Pos.CENTER);
         root.setMinSize(800, 500);
-        root.setMaxSize(800, 500);  
+        root.setMaxSize(800, 500);
 
         // customise VBox
-        root.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(2))));
+        root.setBorder(new Border(
+                new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(2))));
         root.setBackground(Background.EMPTY);
 
-        returnToMenuButton.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        returnToMenuButton.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
 
         // create the scene
         Scene scene = new Scene(root, Color.LIGHTBLUE);
 
         // customise buttons
-        displayAllButton.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
-        fireBrigade.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
-        ambulance.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
-        police.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
-        pendingButton.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
-        displayByResolvedButton.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
-        returnToMenuButton.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
-        
+        displayAllButton.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        fireBrigade.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        ambulance.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        police.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        pendingButton.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        displayByResolvedButton.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+        returnToMenuButton.setBackground(
+                new Background(new BackgroundFill(Color.LIGHTYELLOW, new CornerRadii(10), Insets.EMPTY)));
+
         Label generateReportHeader = new Label("Generate Report");
         generateReportHeader.setFont(new Font("Calibri", 40));
-        Label reportFilterLabel =  new Label("Choose how you would like to filter the report");
+        Label reportFilterLabel = new Label("Choose how you would like to filter the report");
 
         HBox filterPane = new HBox(10);
-        HBox saveEmergencyPane = new HBox(10); //change this to 'return to main menu once feature is working'
+        HBox saveEmergencyPane = new HBox(10);
 
         displayAllButton.setOnAction(e -> displayEmergencies());
         fireBrigade.setOnAction(e -> displayFireEmergencies());
@@ -321,6 +351,7 @@ public class CallCentreGUI extends Application {
         pendingButton.setOnAction(e -> displayPendingEmergencies());
         displayByResolvedButton.setOnAction(e -> displayResolvedEmergencies());
         returnToMenuButton.setOnAction(e -> {
+            errorConsole.setText("");
             appConsole.setText("");
             start(stage);
         });
@@ -333,21 +364,24 @@ public class CallCentreGUI extends Application {
         saveEmergencyPane.setAlignment(Pos.CENTER);
 
         // add all components to VBox
-        root.getChildren().addAll(generateReportHeader, filterPane, appConsole, saveEmergencyPane);
+        root.getChildren().addAll(generateReportHeader, filterPane, appConsole, errorConsole, saveEmergencyPane);
 
         // reset console
         appConsole.setText("");
+        errorConsole.setText("");
         stage.setScene(scene);
         stage.setTitle("Emergency Call Centre");
         stage.setResizable(false);
         stage.show();
     }
 
-    /** Saves current state of emergency data records in the system
-     *  loads to csv for retrieval upon next execution of program
+    /**
+     * Saves current state of emergency data records in the system
+     * loads to csv for retrieval upon next execution of program
      */
-    private void saveAndQuitHandler() {        
-        // write current state information to file, whether complete or not write regardless
+    private void saveAndQuitHandler() {
+        // write current state information to file, whether complete or not write
+        // regardless
         FileManager.writeToFile("Emergencies.csv", emergencies);
         Platform.exit();
     }
@@ -367,26 +401,27 @@ public class CallCentreGUI extends Application {
         police.setBackground(new Background(new BackgroundFill(Color.GRAY, new CornerRadii(10), Insets.EMPTY)));
     }
 
-    /** Adds emergency to the global list of emergencies
+    /**
+     * Adds emergency to the global list of emergencies
      */
     private void saveEmergency(Stage stage) {
         int emergencyId = setEmergencyId();
-        String nameEntered =  callerNameField.getText();
-        String ageEntered =  callerAgeField.getText();
-        String numberEntered =  callerPhoneNumberField.getText();
-        String descriptionEntered =  emergencyDescriptionField.getText();
-        String locationEntered =  emergencyLocationField.getText();
+        String nameEntered = callerNameField.getText();
+        String ageEntered = callerAgeField.getText();
+        String numberEntered = callerPhoneNumberField.getText();
+        String descriptionEntered = emergencyDescriptionField.getText();
+        String locationEntered = emergencyLocationField.getText();
 
         if (nameEntered.length() == 0 || ageEntered.length() == 0 || numberEntered.length() == 0 || descriptionEntered.length() == 0 || locationEntered.length() == 0) {
-            appConsole.setText("None of the fields should be empty! Please populate all fields appropriately");
+            errorConsole.setText("None of the fields should be empty! Please populate all fields appropriately");
         } else if (!nameEntered.matches("[a-zA-Z\\s]+")) {
-            appConsole.setText("Name should only contain alphabets/letters, please amend the name field!");
+            errorConsole.setText("Name should only contain alphabets/letters, please amend the name field!");
         } else if (!ageEntered.matches("[0-9]+") || Integer.parseInt(ageEntered) >= 150) {
-            appConsole.setText("Age should only contain numbers and be less than 150, please amend the age field!");
+            errorConsole.setText("Age should only contain numbers and be less than 150, please amend the age field!");
         } else if (numberEntered.length() != 11 || !numberEntered.matches("[0-9]+")) {
-            appConsole.setText("Phone Number should only contain numbers and must have a length of 11, please amend the phone number field!");
+            errorConsole.setText("Phone Number should only contain numbers and must have a length of 11, please amend the phone number field!");
         } else if (!locationEntered.matches("[a-zA-Z0-9\\s]+") || locationEntered.length() < 6 || locationEntered.length() > 8) {
-            appConsole.setText("Location must be a valid alphanumeric postcode with a length of 6-8, please amend the location field!");
+            errorConsole.setText("Location must be a valid alphanumeric postcode with a length of 6-8, please amend the location field!");
         } else {
             Caller caller = new Caller(nameEntered, Integer.parseInt(ageEntered), numberEntered);
             Emergency emergency = new Emergency(emergencyId, descriptionEntered, locationEntered);
@@ -396,23 +431,31 @@ public class CallCentreGUI extends Application {
             emergency.police = serviceMap.get("police");
             emergencies.emergencyList.add(emergency);
             appConsole.setText("Your emergency was successfully recorded!");
+            errorConsole.setText("");
             start(stage);
         }
     }
 
-    /** Adds emergency to the global list of emergencies
+    /**
+     * Adds emergency to the global list of emergencies
      */
     private void saveUpdatedEmergency(Stage stage) {
-        // error handle this whole function later once I implement thorough input validation
         String id = "";
         String nameEntered = "";
         int ageEntered = 0;
         String numberEntered = "";
+        boolean validator = true;
 
         if (emergencyIdField.getText().length() != 0) {
-            id = emergencyIdField.getText();
-        } else if (!emergencyIdField.getText().matches("[0-9]+") || emergencies.emergencyList.get(Integer.parseInt(emergencyIdField.getText())) ==  null) {
-            appConsole.setText("Emergency with ID (" + emergencyIdField.getText() + ") doesn't exist, please specify a valid ID!");
+            if (!emergencyIdField.getText().matches("[0-9]+") || emergencies.getEmergencyByID(Integer.parseInt(emergencyIdField.getText())) == null) {
+                errorConsole.setText("Emergency with ID (" + emergencyIdField.getText() + ") doesn't exist, please specify a valid ID!");
+                validator = false;
+            } else {
+                id = emergencyIdField.getText();
+            }
+        } else {
+            errorConsole.setText("Emergency with ID (" + emergencyIdField.getText() + ") doesn't exist, please specify a valid ID!");
+            validator = false;
         }
 
         Emergency emergencyToUpdate = emergencies.getEmergencyByID(Integer.parseInt(id));
@@ -434,24 +477,27 @@ public class CallCentreGUI extends Application {
         } else {
             emergencyToUpdate.police = emergencyToUpdate.police;
         }
-        
+
         if (emergencyDescriptionField.getText().length() != 0) {
             emergencyToUpdate.setDescription(emergencyDescriptionField.getText());
         }
 
-        if (emergencyLocationField.getText().length() != 0) {
-            if (!emergencyLocationField.getText().matches("[a-zA-Z0-9\\s]+") || emergencyLocationField.getText().length() < 6 || emergencyLocationField.getText().length() > 8) {
-                appConsole.setText("Location must be a valid alphanumeric postcode with a length of 6-8, please amend the location field!");
-            } else {
-                emergencyToUpdate.setLocation(emergencyLocationField.getText());
-            }
+        if (emergencyLocationField.getText().length() != 0 && 
+            (!emergencyLocationField.getText().matches("[a-zA-Z0-9\\s]+") || 
+            emergencyLocationField.getText().length() < 6 || 
+            emergencyLocationField.getText().length() > 8)) {
+            errorConsole.setText("Location must be a valid alphanumeric postcode with a length of 6-8, please amend the location field!");
+            validator = false;
+        } else {
+            emergencyToUpdate.setLocation(emergencyLocationField.getText());
         }
 
         if (callerNameField.getText().length() != 0) {
             if (!callerNameField.getText().matches("[a-zA-Z\\s]+")) {
-                appConsole.setText("Name should only contain alphabets/letters, please amend the name field!");
+                errorConsole.setText("Name should only contain alphabets/letters, please amend the name field!");
+                validator = false;
             } else {
-                nameEntered =  callerNameField.getText();
+                nameEntered = callerNameField.getText();
             }
         } else {
             nameEntered = emergencyToUpdate.getCallerDetails().getName();
@@ -459,9 +505,10 @@ public class CallCentreGUI extends Application {
 
         if (callerAgeField.getText().length() != 0) {
             if (!callerAgeField.getText().matches("[0-9]+") || Integer.parseInt(callerAgeField.getText()) >= 150) {
-                appConsole.setText("Age should only contain numbers and be less than 150, please amend the age field!");
+                errorConsole.setText("Age should only contain numbers and be less than 150, please amend the age field!");
+                validator = false;
             } else {
-                ageEntered =  Integer.parseInt(callerAgeField.getText());
+                ageEntered = Integer.parseInt(callerAgeField.getText());
             }
         } else {
             ageEntered = emergencyToUpdate.getCallerDetails().getAge();
@@ -469,17 +516,21 @@ public class CallCentreGUI extends Application {
 
         if (callerPhoneNumberField.getText().length() != 0) {
             if (callerPhoneNumberField.getText().length() != 11 || !callerPhoneNumberField.getText().matches("[0-9]+")) {
-                appConsole.setText("Phone Number should only contain numbers and must have a length of 11, please amend the phone number field!");
+                errorConsole.setText("Phone Number should only contain numbers and must have a length of 11, please amend the phone number field!");
+                validator = false;
             } else {
-                numberEntered =  callerPhoneNumberField.getText();
+                numberEntered = callerPhoneNumberField.getText();
             }
         } else {
             numberEntered = emergencyToUpdate.getCallerDetails().getPhoneNumber();
+        }
 
+        if (validator) {
             Caller caller = new Caller(nameEntered, ageEntered, numberEntered);
             emergencyToUpdate.setCallerDetails(caller);
 
             appConsole.setText("Your emergency was successfully updated!");
+            errorConsole.setText("");
 
             start(stage);
         }
@@ -498,194 +549,187 @@ public class CallCentreGUI extends Application {
         appConsole.setText("Your emergency was successfully resolved!");
     }
 
-    /** dynamic auto incremental 'id' generation logic
-     *  This allows users to avoid having entering the same id accidentally for diffrent emergencies
-     * @return the newly generated id for the emergency that is currently being recorded
+    /**
+     * dynamic auto incremental 'id' generation logic
+     * This allows users to avoid having entering the same id accidentally for
+     * diffrent emergencies
+     * 
+     * @return the newly generated id for the emergency that is currently being
+     *         recorded
      */
     private int setEmergencyId() {
         if (emergencies.emergencyList.size() > 0) {
-            return emergencies.emergencyList.get(emergencies.emergencyList.size() -1).id + 1;
+            return emergencies.emergencyList.get(emergencies.emergencyList.size() - 1).id + 1;
         }
 
         return 1;
     }
 
-    /** user friendly formatting for display report function
+    /**
+     * user friendly formatting for display report function
      */
     private void displayEmergencies() {
         appConsole.setText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
-            "ID,",
-            "FireBrigadeRequired,",
-            "PoliceRequired,",
-            "AmbulanceRequired,",
-            "Description,",
-            "Location,",
-            "DateRaised,",
-            "Status,",
-            "CallerDetails"
-        ));
+                "ID,",
+                "FireBrigadeRequired,",
+                "PoliceRequired,",
+                "AmbulanceRequired,",
+                "Description,",
+                "Location,",
+                "DateRaised,",
+                "Status,",
+                "CallerDetails"));
 
-        for (Emergency emergency: emergencies.emergencyList) {
-            appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n", 
-                emergency.id, 
-                emergency.fireBrigade, 
-                emergency.police, 
-                emergency.ambulance, 
-                emergency.getDescription(), 
-                emergency.getLocation(), 
-                emergency.dateRaised.toString(), 
-                emergency.status.toString(), 
-                emergency.callerDetails.displayCallerDetails()
-            ));
+        for (Emergency emergency : emergencies.emergencyList) {
+            appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
+                    emergency.id,
+                    emergency.fireBrigade,
+                    emergency.police,
+                    emergency.ambulance,
+                    emergency.getDescription(),
+                    emergency.getLocation(),
+                    emergency.dateRaised.toString(),
+                    emergency.status.toString(),
+                    emergency.callerDetails.displayCallerDetails()));
         }
     }
 
     private void displayFireEmergencies() {
         appConsole.setText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
-            "ID,",
-            "FireBrigadeRequired,",
-            "PoliceRequired,",
-            "AmbulanceRequired,",
-            "Description,",
-            "Location,",
-            "DateRaised,",
-            "Status,",
-            "CallerDetails"
-        ));
+                "ID,",
+                "FireBrigadeRequired,",
+                "PoliceRequired,",
+                "AmbulanceRequired,",
+                "Description,",
+                "Location,",
+                "DateRaised,",
+                "Status,",
+                "CallerDetails"));
 
-        for (Emergency emergency: emergencies.emergencyList) {
+        for (Emergency emergency : emergencies.emergencyList) {
             if (emergency.fireBrigade == true) {
-                appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n", 
-                    emergency.id, 
-                    emergency.fireBrigade, 
-                    emergency.police, 
-                    emergency.ambulance, 
-                    emergency.getDescription(), 
-                    emergency.getLocation(), 
-                    emergency.dateRaised.toString(), 
-                    emergency.status.toString(), 
-                    emergency.callerDetails.displayCallerDetails()
-                ));
+                appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
+                        emergency.id,
+                        emergency.fireBrigade,
+                        emergency.police,
+                        emergency.ambulance,
+                        emergency.getDescription(),
+                        emergency.getLocation(),
+                        emergency.dateRaised.toString(),
+                        emergency.status.toString(),
+                        emergency.callerDetails.displayCallerDetails()));
             }
         }
     }
 
     private void displayAmbulanceEmergencies() {
         appConsole.setText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
-            "ID,",
-            "FireBrigadeRequired,",
-            "PoliceRequired,",
-            "AmbulanceRequired,",
-            "Description,",
-            "Location,",
-            "DateRaised,",
-            "Status,",
-            "CallerDetails"
-        ));
+                "ID,",
+                "FireBrigadeRequired,",
+                "PoliceRequired,",
+                "AmbulanceRequired,",
+                "Description,",
+                "Location,",
+                "DateRaised,",
+                "Status,",
+                "CallerDetails"));
 
-        for (Emergency emergency: emergencies.emergencyList) {
+        for (Emergency emergency : emergencies.emergencyList) {
             if (emergency.ambulance == true) {
-                appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n", 
-                    emergency.id, 
-                    emergency.fireBrigade, 
-                    emergency.police, 
-                    emergency.ambulance, 
-                    emergency.getDescription(), 
-                    emergency.getLocation(), 
-                    emergency.dateRaised.toString(), 
-                    emergency.status.toString(), 
-                    emergency.callerDetails.displayCallerDetails()
-                ));
+                appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
+                        emergency.id,
+                        emergency.fireBrigade,
+                        emergency.police,
+                        emergency.ambulance,
+                        emergency.getDescription(),
+                        emergency.getLocation(),
+                        emergency.dateRaised.toString(),
+                        emergency.status.toString(),
+                        emergency.callerDetails.displayCallerDetails()));
             }
         }
     }
 
     private void displayPoliceEmergencies() {
         appConsole.setText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
-            "ID,",
-            "FireBrigadeRequired,",
-            "PoliceRequired,",
-            "AmbulanceRequired,",
-            "Description,",
-            "Location,",
-            "DateRaised,",
-            "Status,",
-            "CallerDetails"
-        ));
+                "ID,",
+                "FireBrigadeRequired,",
+                "PoliceRequired,",
+                "AmbulanceRequired,",
+                "Description,",
+                "Location,",
+                "DateRaised,",
+                "Status,",
+                "CallerDetails"));
 
-        for (Emergency emergency: emergencies.emergencyList) {
+        for (Emergency emergency : emergencies.emergencyList) {
             if (emergency.police == true) {
-                appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n", 
-                    emergency.id, 
-                    emergency.fireBrigade, 
-                    emergency.police, 
-                    emergency.ambulance, 
-                    emergency.getDescription(), 
-                    emergency.getLocation(), 
-                    emergency.dateRaised.toString(), 
-                    emergency.status.toString(), 
-                    emergency.callerDetails.displayCallerDetails()
-                ));
+                appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
+                        emergency.id,
+                        emergency.fireBrigade,
+                        emergency.police,
+                        emergency.ambulance,
+                        emergency.getDescription(),
+                        emergency.getLocation(),
+                        emergency.dateRaised.toString(),
+                        emergency.status.toString(),
+                        emergency.callerDetails.displayCallerDetails()));
             }
         }
     }
 
     private void displayPendingEmergencies() {
         appConsole.setText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
-            "ID,",
-            "FireBrigadeRequired,",
-            "PoliceRequired,",
-            "AmbulanceRequired,",
-            "Description,",
-            "Location,",
-            "DateRaised,",
-            "Status,",
-            "CallerDetails"
-        ));
+                "ID,",
+                "FireBrigadeRequired,",
+                "PoliceRequired,",
+                "AmbulanceRequired,",
+                "Description,",
+                "Location,",
+                "DateRaised,",
+                "Status,",
+                "CallerDetails"));
 
-        for (Emergency emergency: emergencies.emergencyList) {
+        for (Emergency emergency : emergencies.emergencyList) {
             if (emergency.status == Emergency.Status.PENDING) {
-                appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n", 
-                    emergency.id, 
-                    emergency.fireBrigade, 
-                    emergency.police, 
-                    emergency.ambulance, 
-                    emergency.getDescription(), 
-                    emergency.getLocation(), 
-                    emergency.dateRaised.toString(), 
-                    emergency.status.toString(), 
-                    emergency.callerDetails.displayCallerDetails()
-                ));
+                appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
+                        emergency.id,
+                        emergency.fireBrigade,
+                        emergency.police,
+                        emergency.ambulance,
+                        emergency.getDescription(),
+                        emergency.getLocation(),
+                        emergency.dateRaised.toString(),
+                        emergency.status.toString(),
+                        emergency.callerDetails.displayCallerDetails()));
             }
         }
     }
 
     private void displayResolvedEmergencies() {
         appConsole.setText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
-            "ID,",
-            "FireBrigadeRequired,",
-            "PoliceRequired,",
-            "AmbulanceRequired,",
-            "Description,",
-            "Location,",
-            "DateRaised,",
-            "Status,",
-            "CallerDetails"
-        ));
+                "ID,",
+                "FireBrigadeRequired,",
+                "PoliceRequired,",
+                "AmbulanceRequired,",
+                "Description,",
+                "Location,",
+                "DateRaised,",
+                "Status,",
+                "CallerDetails"));
 
-        for (Emergency emergency: emergencies.emergencyList) {
+        for (Emergency emergency : emergencies.emergencyList) {
             if (emergency.status == Emergency.Status.RESOLVED) {
-                appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n", 
-                    emergency.id, 
-                    emergency.fireBrigade, 
-                    emergency.police, 
-                    emergency.ambulance, 
-                    emergency.getDescription(), 
-                    emergency.getLocation(), 
-                    emergency.dateRaised.toString(), 
-                    emergency.status.toString(), 
-                    emergency.callerDetails.displayCallerDetails()
-                ));
+                appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
+                        emergency.id,
+                        emergency.fireBrigade,
+                        emergency.police,
+                        emergency.ambulance,
+                        emergency.getDescription(),
+                        emergency.getLocation(),
+                        emergency.dateRaised.toString(),
+                        emergency.status.toString(),
+                        emergency.callerDetails.displayCallerDetails()));
             }
         }
     }
