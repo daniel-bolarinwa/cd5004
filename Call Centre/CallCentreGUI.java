@@ -2,7 +2,6 @@
  *  @author Daniel Bolarinwa
  */
 
-// TODO: FORMAT DISPLAY EMERGENCY SO IT LOOKS NICE!!!
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -79,7 +78,7 @@ public class CallCentreGUI extends Application {
     public void start(Stage stage) {
         headingLabel.setFont(new Font("Calibri", 40));
         appConsole.setMaxSize(400, 200);
-        errorConsole.setMaxSize(400, 200);
+        errorConsole.setMaxSize(400, 50);
 
         // event handler for all menu option
         recordButton.setOnAction(e -> recordEmergencyHandler(stage));
@@ -140,9 +139,14 @@ public class CallCentreGUI extends Application {
         serviceMap.put("ambulance", false);
         serviceMap.put("police", false);
 
-        // reset console
+        // reset text fields
         appConsole.setText("");
         errorConsole.setText("");
+        callerNameField.setText("");
+        callerAgeField.setText("");
+        callerPhoneNumberField.setText("");
+        emergencyDescriptionField.setText("");
+        emergencyLocationField.setText("");
 
         // create VBox
         VBox root = new VBox(10);
@@ -219,13 +223,23 @@ public class CallCentreGUI extends Application {
         stage.setWidth(1000);
         stage.setHeight(700);
 
+        // reset text fields
+        appConsole.setText("");
+        errorConsole.setText("");
+        callerNameField.setText("");
+        callerAgeField.setText("");
+        callerPhoneNumberField.setText("");
+        emergencyDescriptionField.setText("");
+        emergencyLocationField.setText("");
+        emergencyIdField.setText("");
+
         // set details of VBox
         root.setAlignment(Pos.CENTER);
         root.setMinSize(1000, 700);
         root.setMaxSize(1000, 700);
 
         appConsole.setMaxSize(900, 200);
-        errorConsole.setMaxSize(900, 200);
+        errorConsole.setMaxSize(900, 50);
 
         // customise VBox
         root.setBorder(new Border(
@@ -383,8 +397,7 @@ public class CallCentreGUI extends Application {
      * loads to csv for retrieval upon next execution of program
      */
     private void saveAndQuitHandler() {
-        // write current state information to file, whether complete or not write
-        // regardless
+        // write current state information to file, whether complete or not write regardless
         FileManager.writeToFile("Emergencies.csv", emergencies);
         Platform.exit();
     }
@@ -579,18 +592,45 @@ public class CallCentreGUI extends Application {
      */
     private void displayEmergencies() {
         appConsole.setText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
-                "ID,",
-                "FireBrigadeRequired,",
-                "PoliceRequired,",
-                "AmbulanceRequired,",
-                "Description,",
-                "Location,",
-                "DateRaised,",
-                "Status,",
-                "CallerDetails"));
+            "ID,",
+            "FireBrigadeRequired,",
+            "PoliceRequired,",
+            "AmbulanceRequired,",
+            "Description,",
+            "Location,",
+            "DateRaised,",
+            "Status,",
+            "CallerDetails"));
 
         for (Emergency emergency : emergencies.emergencyList) {
             appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
+                emergency.id,
+                emergency.fireBrigade,
+                emergency.police,
+                emergency.ambulance,
+                emergency.getDescription(),
+                emergency.getLocation(),
+                emergency.dateRaised.toString(),
+                emergency.status.toString(),
+                emergency.callerDetails.displayCallerDetails()));
+        }
+    }
+
+    private void displayFireEmergencies() {
+        appConsole.setText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
+            "ID,",
+            "FireBrigadeRequired,",
+            "PoliceRequired,",
+            "AmbulanceRequired,",
+            "Description,",
+            "Location,",
+            "DateRaised,",
+            "Status,",
+            "CallerDetails"));
+
+        for (Emergency emergency : emergencies.emergencyList) {
+            if (emergency.fireBrigade == true) {
+                appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
                     emergency.id,
                     emergency.fireBrigade,
                     emergency.police,
@@ -600,145 +640,118 @@ public class CallCentreGUI extends Application {
                     emergency.dateRaised.toString(),
                     emergency.status.toString(),
                     emergency.callerDetails.displayCallerDetails()));
-        }
-    }
-
-    private void displayFireEmergencies() {
-        appConsole.setText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
-                "ID,",
-                "FireBrigadeRequired,",
-                "PoliceRequired,",
-                "AmbulanceRequired,",
-                "Description,",
-                "Location,",
-                "DateRaised,",
-                "Status,",
-                "CallerDetails"));
-
-        for (Emergency emergency : emergencies.emergencyList) {
-            if (emergency.fireBrigade == true) {
-                appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
-                        emergency.id,
-                        emergency.fireBrigade,
-                        emergency.police,
-                        emergency.ambulance,
-                        emergency.getDescription(),
-                        emergency.getLocation(),
-                        emergency.dateRaised.toString(),
-                        emergency.status.toString(),
-                        emergency.callerDetails.displayCallerDetails()));
             }
         }
     }
 
     private void displayAmbulanceEmergencies() {
         appConsole.setText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
-                "ID,",
-                "FireBrigadeRequired,",
-                "PoliceRequired,",
-                "AmbulanceRequired,",
-                "Description,",
-                "Location,",
-                "DateRaised,",
-                "Status,",
-                "CallerDetails"));
+            "ID,",
+            "FireBrigadeRequired,",
+            "PoliceRequired,",
+            "AmbulanceRequired,",
+            "Description,",
+            "Location,",
+            "DateRaised,",
+            "Status,",
+            "CallerDetails"));
 
         for (Emergency emergency : emergencies.emergencyList) {
             if (emergency.ambulance == true) {
                 appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
-                        emergency.id,
-                        emergency.fireBrigade,
-                        emergency.police,
-                        emergency.ambulance,
-                        emergency.getDescription(),
-                        emergency.getLocation(),
-                        emergency.dateRaised.toString(),
-                        emergency.status.toString(),
-                        emergency.callerDetails.displayCallerDetails()));
+                    emergency.id,
+                    emergency.fireBrigade,
+                    emergency.police,
+                    emergency.ambulance,
+                    emergency.getDescription(),
+                    emergency.getLocation(),
+                    emergency.dateRaised.toString(),
+                    emergency.status.toString(),
+                    emergency.callerDetails.displayCallerDetails()));
             }
         }
     }
 
     private void displayPoliceEmergencies() {
         appConsole.setText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
-                "ID,",
-                "FireBrigadeRequired,",
-                "PoliceRequired,",
-                "AmbulanceRequired,",
-                "Description,",
-                "Location,",
-                "DateRaised,",
-                "Status,",
-                "CallerDetails"));
+            "ID,",
+            "FireBrigadeRequired,",
+            "PoliceRequired,",
+            "AmbulanceRequired,",
+            "Description,",
+            "Location,",
+            "DateRaised,",
+            "Status,",
+            "CallerDetails"));
 
         for (Emergency emergency : emergencies.emergencyList) {
             if (emergency.police == true) {
                 appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
-                        emergency.id,
-                        emergency.fireBrigade,
-                        emergency.police,
-                        emergency.ambulance,
-                        emergency.getDescription(),
-                        emergency.getLocation(),
-                        emergency.dateRaised.toString(),
-                        emergency.status.toString(),
-                        emergency.callerDetails.displayCallerDetails()));
+                    emergency.id,
+                    emergency.fireBrigade,
+                    emergency.police,
+                    emergency.ambulance,
+                    emergency.getDescription(),
+                    emergency.getLocation(),
+                    emergency.dateRaised.toString(),
+                    emergency.status.toString(),
+                    emergency.callerDetails.displayCallerDetails()));
             }
         }
     }
 
     private void displayPendingEmergencies() {
         appConsole.setText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
-                "ID,",
-                "FireBrigadeRequired,",
-                "PoliceRequired,",
-                "AmbulanceRequired,",
-                "Description,",
-                "Location,",
-                "DateRaised,",
-                "Status,",
-                "CallerDetails"));
+            "ID,",
+            "FireBrigadeRequired,",
+            "PoliceRequired,",
+            "AmbulanceRequired,",
+            "Description,",
+            "Location,",
+            "DateRaised,",
+            "Status,",
+            "CallerDetails"));
 
         for (Emergency emergency : emergencies.emergencyList) {
             if (emergency.status == Emergency.Status.PENDING) {
                 appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
-                        emergency.id,
-                        emergency.fireBrigade,
-                        emergency.police,
-                        emergency.ambulance,
-                        emergency.getDescription(),
-                        emergency.getLocation(),
-                        emergency.dateRaised.toString(),
-                        emergency.status.toString(),
-                        emergency.callerDetails.displayCallerDetails()));
+                    emergency.id,
+                    emergency.fireBrigade,
+                    emergency.police,
+                    emergency.ambulance,
+                    emergency.getDescription(),
+                    emergency.getLocation(),
+                    emergency.dateRaised.toString(),
+                    emergency.status.toString(),
+                    emergency.callerDetails.displayCallerDetails()));
             }
         }
     }
 
     private void displayResolvedEmergencies() {
         appConsole.setText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
-                "ID,",
-                "FireBrigadeRequired,",
-                "PoliceRequired,",
-                "AmbulanceRequired,",
-                "Description,",
-                "Location,",
-                "DateRaised,",
-                "Status,",
-                "CallerDetails"));
+            "ID,",
+            "FireBrigadeRequired,",
+            "PoliceRequired,",
+            "AmbulanceRequired,",
+            "Description,",
+            "Location,",
+            "DateRaised,",
+            "Status,",
+            "CallerDetails"));
 
         for (Emergency emergency : emergencies.emergencyList) {
             if (emergency.status == Emergency.Status.RESOLVED) {
                 appConsole.appendText(String.format("%-5s %-20s %-15s %-18s %-20s %-9s %-23s %-8s %-20s\n",
-                        emergency.id,
-                        emergency.fireBrigade,
-                        emergency.police,
-                        emergency.ambulance,
-                        emergency.getDescription(),
-                        emergency.getLocation(),
-                        emergency.dateRaised.toString(),
-                        emergency.status.toString(),
-                        emergency.callerDetails.displayCallerDetails()));
+                    emergency.id,
+                    emergency.fireBrigade,
+                    emergency.police,
+                    emergency.ambulance,
+                    emergency.getDescription(),
+                    emergency.getLocation(),
+                    emergency.dateRaised.toString(),
+                    emergency.status.toString(),
+                    emergency.callerDetails.displayCallerDetails()));
             }
         }
     }
